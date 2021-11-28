@@ -30,7 +30,6 @@ user_themes
 theme
   - name
   - pro_only
-  - designer_id (points to user)
   - price
   - background_css
 
