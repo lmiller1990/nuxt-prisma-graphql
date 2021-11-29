@@ -7,6 +7,7 @@
     "@types/express": "^4.17.13",
     "@types/express-graphql": "^0.9.0",
     "@types/node": "^16.11.10",
+    "@vitejs/plugin-vue": "^1.9.3",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "graphql": "^15.0.1",
@@ -15,14 +16,21 @@
     "prisma-upgrade": "^0.0.43",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.2"
+    "typescript": "^4.3.2",
+    "vite": "^2.6.4",
+    "vue-tsc": "^0.3.0"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.19.2",
-    "@prisma/client": "3.5.0"
+    "@prisma/client": "3.5.0",
+    "vue": "^3.2.16",
+    "vue-router": "^4.0.12"
   },
   "scripts": {
     "nexus:dev": "ts-node-dev --transpile-only --no-notify api/index.ts",
-    "nexus:build": "tsc"
+    "nexus:build": "tsc",
+    "vite:dev": "vite",
+    "vite:build": "vue-tsc --noEmit && vite build",
+    "vite:serve": "vite preview"
   }
 }
