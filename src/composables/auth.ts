@@ -1,23 +1,17 @@
 import { ref, shallowRef, reactive } from "vue";
-import pDefer from "p-defer";
 import createAuth0Client, {
   Auth0Client,
-  Auth0ClientOptions,
   User,
 } from "@auth0/auth0-spa-js";
+import { authOptions, redirectUri } from "../environ";
+import pDefer from "../util/pDefer";
 
 export interface AppState {
   targetUrl?: string;
 }
-
-export const authOptions: Auth0ClientOptions = {
-  client_id: import.meta.env.VITE_AUTH0_CLIENT_ID,
-  domain: import.meta.env.VITE_AUTH0_DOMAIN,
-} as const;
-
 type OnRedirectCallback = (appState: AppState) => void;
 
-let client = shallowRef<Auth0Client>();
+const client = shallowRef<Auth0Client>();
 
 interface AuthInfo {
   error?: string;
@@ -31,13 +25,13 @@ const info = reactive<AuthInfo>({
 
 const user = ref<User | undefined>();
 
-const deferred = pDefer<Auth0Client>();
+let deferred = pDefer<Auth0Client>();
 
 export function useAuth() {
   if (!client.value) {
     createAuth0Client({
       ...authOptions,
-      redirect_uri: window.location.origin,
+      redirect_uri: redirectUri
     }).then((client) => {
       deferred.resolve(client);
     });
@@ -93,5 +87,12 @@ export function useAuth() {
     client,
     user,
     authenticate,
+    reset: () => {
+      user.value = undefined
+      info.loading = false
+      info.error = undefined
+      client.value = undefined
+      deferred = pDefer()
+    }
   };
 }

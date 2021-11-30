@@ -5,6 +5,7 @@
     "strict": true,
     "lib": ["esnext"],
     "esModuleInterop": true,
+    "allowJs": true,
     "module": "ESNext",
     "moduleResolution": "node"
   },
