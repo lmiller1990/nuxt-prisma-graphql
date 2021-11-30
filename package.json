@@ -12,6 +12,7 @@
     "express-graphql": "^0.12.0",
     "graphql": "^15.0.1",
     "nexus": "^1.1.0",
+    "p-defer": "^4.0.0",
     "prisma": "3.5.0",
     "prisma-upgrade": "^0.0.43",
     "ts-node": "^10.4.0",

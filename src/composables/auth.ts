@@ -1,67 +1,97 @@
-import { ref, shallowRef } from "vue";
-import createAuth0Client, { Auth0Client, Auth0ClientOptions, RedirectLoginOptions, User } from "@auth0/auth0-spa-js";
+import { ref, shallowRef, reactive } from "vue";
+import pDefer from "p-defer";
+import createAuth0Client, {
+  Auth0Client,
+  Auth0ClientOptions,
+  User,
+} from "@auth0/auth0-spa-js";
 
 export interface AppState {
-  targetUrl?: string
+  targetUrl?: string;
 }
 
 export const authOptions: Auth0ClientOptions = {
-  client_id: "B6q5B5AazxXq5pjypivtOyEmOvlJtUNn",
-  domain: "dev-p-8qknej.us.auth0.com",
-} as const
+  client_id: import.meta.env.VITE_AUTH0_CLIENT_ID,
+  domain: import.meta.env.VITE_AUTH0_DOMAIN,
+} as const;
 
-const onRedirectCallback = (appState: AppState) =>
-  window.history.replaceState({}, document.title, window.location.pathname);
+type OnRedirectCallback = (appState: AppState) => void;
 
-export function useAuth(onRedirectCallback: (appState: AppState) => void) {
-  const error = ref<Error>();
-  const loading = ref(false);
-  const isAuthenticated = ref(false);
-  const user = ref<User | undefined>();
-  let auth0Client: Auth0Client
+let client = shallowRef<Auth0Client>();
 
-  const authenticate = async () => {
-    auth0Client = await createAuth0Client({
+interface AuthInfo {
+  error?: string;
+  loading?: boolean;
+}
+
+const info = reactive<AuthInfo>({
+  error: undefined,
+  loading: undefined,
+});
+
+const user = ref<User | undefined>();
+
+const deferred = pDefer<Auth0Client>();
+
+export function useAuth() {
+  if (!client.value) {
+    createAuth0Client({
       ...authOptions,
       redirect_uri: window.location.origin,
+    }).then((client) => {
+      deferred.resolve(client);
     });
+  }
 
-    console.log(auth0Client)
+  const login = async () => {
+    if (!client.value) {
+      client.value = await deferred.promise;
+    }
+    await client.value.loginWithRedirect(authOptions);
+    user.value = await client.value.getUser();
+  };
+
+  const logout = async (returnTo: string = window.location.origin) => {
+    if (!client.value) {
+      client.value = await deferred.promise;
+    }
+    await client.value.logout({ returnTo });
+    user.value = await client.value.getUser();
+  };
+
+  const authenticate = async (onRedirectCallback: OnRedirectCallback) => {
+    if (!client.value) {
+      client.value = await deferred.promise;
+    }
 
     try {
-      // If the user is returning to the app after authentication..
+      // If the user is returning to the app after authentication.
       if (
         window.location.search.includes("code=") &&
         window.location.search.includes("state=")
       ) {
         // handle the redirect and retrieve tokens
-        const { appState } = await auth0Client.handleRedirectCallback();
+        const { appState } = await client.value.handleRedirectCallback();
 
-        console.log({ appState });
-
-        // Notify subscribers that the redirect callback has happened, passing the appState
+        // Notify subscribers that the redirect callback has happened
         // (useful for retrieving any pre-authentication state)
         onRedirectCallback(appState);
       }
     } catch (e) {
-      console.log(e)
-      error.value = e as Error;
+      info.error = (e as Error).message;
     } finally {
       // Initialize our internal authentication state
-      console.log('ok')
-      isAuthenticated.value = await auth0Client.isAuthenticated();
-      user.value = await auth0Client.getUser();
-      loading.value = false;
+      user.value = await client.value.getUser();
+      info.loading = false;
     }
-
-    return auth0Client
   };
 
   return {
-    error,
-    loading,
-    isAuthenticated,
+    login,
+    logout,
+    info,
+    client,
     user,
-    authenticate
+    authenticate,
   };
 }
