@@ -10,11 +10,13 @@
     "@graphql-codegen/typescript": "^2.4.1",
     "@graphql-codegen/typescript-operations": "^2.2.1",
     "@graphql-typed-document-node/core": "^3.1.1",
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/express-graphql": "^0.9.0",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.10",
     "@vitejs/plugin-vue": "^1.9.3",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "graphql": "^15.0.1",
@@ -35,6 +37,7 @@
     "@auth0/auth0-spa-js": "^1.19.2",
     "@prisma/client": "3.5.0",
     "@urql/vue": "^0.6.1",
+    "events": "^3.3.0",
     "vue": "^3.2.16",
     "vue-router": "^4.0.12"
   },
@@ -46,6 +49,7 @@
     "vite:serve": "vite preview",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
+    "gql:codegen": "graphql-codegen --config ${PWD}/graphql-codegen.yml",
     "test:unit": "yarn jest"
   }
 }

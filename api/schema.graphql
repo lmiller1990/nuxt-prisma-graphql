@@ -4,6 +4,7 @@
 
 type Link {
   id: Int!
+  order: Int!
   text: String!
 }
 

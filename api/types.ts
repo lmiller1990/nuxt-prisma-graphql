@@ -18,6 +18,7 @@ export const gqlLink = objectType({
   definition(t) {
     t.field(Link.id);
     t.field(Link.text);
+    t.field(Link.order);
   },
 });
 
@@ -40,6 +41,7 @@ export const Mutation = mutationType({
         email: nonNull(stringArg()),
       },
       resolve: async (source, args, ctx) => {
+        console.log('email!!!', args.email)
         const user = await ctx.prisma.user.findFirst({
           where: {
             email: args.email,

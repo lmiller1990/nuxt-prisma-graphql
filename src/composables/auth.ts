@@ -1,7 +1,8 @@
-import { ref, shallowRef, reactive } from "vue";
+import { ref, shallowRef, reactive, watch } from "vue";
 import createAuth0Client, { Auth0Client, User } from "@auth0/auth0-spa-js";
 import { authOptions, redirectUri } from "../environ";
 import pDefer from "../util/pDefer";
+import { bus } from "../emitter";
 
 export interface AppState {
   targetUrl?: string;
@@ -33,6 +34,12 @@ export function useAuth() {
       deferred.resolve(client);
     });
   }
+
+  watch(user, (user) => {
+    if (user?.email) {
+      bus.emit('authenticated', user.email)
+    }
+  })
 
   const login = async () => {
     if (!client.value) {
