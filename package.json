@@ -14,6 +14,7 @@
     "graphql": "^15.0.1",
     "jest": "^27.4.2",
     "nexus": "^1.1.0",
+    "nexus-prisma": "^0.35.0",
     "nodemon": "^2.0.15",
     "prisma": "3.5.0",
     "prisma-upgrade": "^0.0.43",
@@ -36,6 +37,7 @@
     "vite:dev": "vite",
     "vite:build": "vue-tsc --noEmit && vite build",
     "vite:serve": "vite preview",
+    "db:migrate": "prisma migrate dev",
     "test:unit": "yarn jest"
   }
 }

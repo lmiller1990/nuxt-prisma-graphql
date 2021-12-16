@@ -29,17 +29,15 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Link: { // root type
-    id?: string | null; // ID
-    order: number; // Int!
+    id: number; // Int!
     text: string; // String!
   }
   Mutation: {};
   Query: {};
   User: { // root type
-    Link: NexusGenRootTypes['Link'][]; // [Link!]!
     email: string; // String!
-    id?: string | null; // ID
-    username: string; // String!
+    id: number; // Int!
+    username?: string | null; // String
   }
 }
 
@@ -55,28 +53,26 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Link: { // field return type
-    id: string | null; // ID
-    order: number; // Int!
+    id: number; // Int!
     text: string; // String!
   }
   Mutation: { // field return type
     authenticate: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
-    viewer: NexusGenRootTypes['User']; // User!
+    viewer: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
-    Link: NexusGenRootTypes['Link'][]; // [Link!]!
     email: string; // String!
-    id: string | null; // ID
-    username: string; // String!
+    id: number; // Int!
+    links: NexusGenRootTypes['Link'][]; // [Link!]!
+    username: string | null; // String
   }
 }
 
 export interface NexusGenFieldTypeNames {
   Link: { // field return type name
-    id: 'ID'
-    order: 'Int'
+    id: 'Int'
     text: 'String'
   }
   Mutation: { // field return type name
@@ -86,9 +82,9 @@ export interface NexusGenFieldTypeNames {
     viewer: 'User'
   }
   User: { // field return type name
-    Link: 'Link'
     email: 'String'
-    id: 'ID'
+    id: 'Int'
+    links: 'Link'
     username: 'String'
   }
 }

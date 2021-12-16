@@ -3,8 +3,7 @@
 
 
 type Link {
-  id: ID
-  order: Int!
+  id: Int!
   text: String!
 }
 
@@ -13,12 +12,12 @@ type Mutation {
 }
 
 type Query {
-  viewer: User!
+  viewer: User
 }
 
 type User {
-  Link: [Link!]!
   email: String!
-  id: ID
-  username: String!
+  id: Int!
+  links: [Link!]!
+  username: String
 }

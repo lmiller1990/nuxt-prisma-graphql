@@ -6,7 +6,7 @@ import { Context } from './context';
 
 export const app = express()
 
-const prisma = new PrismaClient();
+const context = new Context()
 
 app.use(
   "/graphql",
@@ -14,7 +14,7 @@ app.use(
     return {
       schema: graphqlSchema,
       graphiql: true,
-      context: new Context()
+      context
     };
   })
 );

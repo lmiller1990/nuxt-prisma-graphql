@@ -1,63 +1,70 @@
-import { mutationType, nonNull, objectType, stringArg } from 'nexus'
+import { mutationType, nonNull, objectType, queryType, stringArg } from "nexus";
+import { Link, User } from "nexus-prisma";
 
-export const User = objectType({
-  name: "User",
+export const gqlUser = objectType({
+  name: User.$name,
+  description: User.$description,
   definition(t) {
-    t.id("id");
-    t.nonNull.string("username");
-    t.nonNull.string("email");
-    t.nonNull.list.nonNull.field("Link", {
-      type: Link,
+    t.field(User.id);
+    t.field(User.email);
+    t.field(User.links);
+    t.field(User.username);
+  },
+});
+
+export const gqlLink = objectType({
+  name: Link.$name,
+  description: Link.$description,
+  definition(t) {
+    t.field(Link.id);
+    t.field(Link.text);
+  },
+});
+
+export const Query = queryType({
+  definition(t) {
+    t.field("viewer", {
+      type: "User",
+      resolve: (src, args, ctx) => {
+        return ctx.viewer ?? null;
+      },
     });
   },
 });
 
-export const Link = objectType({
-  name: 'Link',
-  definition (t) {
-    t.id('id')
-    t.nonNull.string('text')
-    t.nonNull.int('order')
-  }
-})
-
-export const Query = objectType({
-  name: 'Query',
-  definition (t) {
-    t.nonNull.field('viewer', {
-      type: User,
-      resolve: (src, args, ctx) => {
-        return {
-        }
-      }
-    })
-  }
-})
-
 export const Mutation = mutationType({
   definition(t) {
-    t.field('authenticate', {
-      type: 'User',
+    t.field("authenticate", {
+      type: "User",
       args: {
-        email: nonNull(stringArg())
+        email: nonNull(stringArg()),
       },
       resolve: async (source, args, ctx) => {
         const user = await ctx.prisma.user.findFirst({
           where: {
-            email: args.email
-          }
-        })
-        
+            email: args.email,
+          },
+          include: {
+            links: true,
+          },
+        });
+
         if (user) {
-          return user
+          ctx.viewer = user;
+          return ctx.viewer;
         }
 
-        ctx.prisma.user.create({
+        ctx.viewer = await ctx.prisma.user.create({
           data: {
-            email: args.email
-          }  
-        })
-      }
-    })
-  }
-})
+            email: args.email,
+          },
+          include: {
+            links: true,
+          },
+        });
+
+        return ctx.viewer;
+      },
+    });
+  },
+});
