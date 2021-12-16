@@ -4,7 +4,7 @@
  */
 
 
-
+import type { Context } from "./context"
 
 
 
@@ -33,6 +33,7 @@ export interface NexusGenObjects {
     order: number; // Int!
     text: string; // String!
   }
+  Mutation: {};
   Query: {};
   User: { // root type
     Link: NexusGenRootTypes['Link'][]; // [Link!]!
@@ -58,6 +59,9 @@ export interface NexusGenFieldTypes {
     order: number; // Int!
     text: string; // String!
   }
+  Mutation: { // field return type
+    authenticate: NexusGenRootTypes['User'] | null; // User
+  }
   Query: { // field return type
     viewer: NexusGenRootTypes['User']; // User!
   }
@@ -75,6 +79,9 @@ export interface NexusGenFieldTypeNames {
     order: 'Int'
     text: 'String'
   }
+  Mutation: { // field return type name
+    authenticate: 'User'
+  }
   Query: { // field return type name
     viewer: 'User'
   }
@@ -87,6 +94,11 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    authenticate: { // args
+      email: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -120,7 +132,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

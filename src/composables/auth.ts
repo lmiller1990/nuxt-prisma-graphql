@@ -1,8 +1,5 @@
 import { ref, shallowRef, reactive } from "vue";
-import createAuth0Client, {
-  Auth0Client,
-  User,
-} from "@auth0/auth0-spa-js";
+import createAuth0Client, { Auth0Client, User } from "@auth0/auth0-spa-js";
 import { authOptions, redirectUri } from "../environ";
 import pDefer from "../util/pDefer";
 
@@ -31,7 +28,7 @@ export function useAuth() {
   if (!client.value) {
     createAuth0Client({
       ...authOptions,
-      redirect_uri: redirectUri
+      redirect_uri: redirectUri,
     }).then((client) => {
       deferred.resolve(client);
     });
@@ -88,11 +85,11 @@ export function useAuth() {
     user,
     authenticate,
     reset: () => {
-      user.value = undefined
-      info.loading = false
-      info.error = undefined
-      client.value = undefined
-      deferred = pDefer()
-    }
+      user.value = undefined;
+      info.loading = false;
+      info.error = undefined;
+      client.value = undefined;
+      deferred = pDefer();
+    },
   };
 }

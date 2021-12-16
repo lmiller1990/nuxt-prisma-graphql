@@ -1,4 +1,4 @@
-import { objectType } from 'nexus'
+import { mutationType, nonNull, objectType, stringArg } from 'nexus'
 
 export const User = objectType({
   name: "User",
@@ -29,6 +29,34 @@ export const Query = objectType({
       resolve: (src, args, ctx) => {
         return {
         }
+      }
+    })
+  }
+})
+
+export const Mutation = mutationType({
+  definition(t) {
+    t.field('authenticate', {
+      type: 'User',
+      args: {
+        email: nonNull(stringArg())
+      },
+      resolve: async (source, args, ctx) => {
+        const user = await ctx.prisma.user.findFirst({
+          where: {
+            email: args.email
+          }
+        })
+        
+        if (user) {
+          return user
+        }
+
+        ctx.prisma.user.create({
+          data: {
+            email: args.email
+          }  
+        })
       }
     })
   }

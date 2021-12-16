@@ -8,6 +8,10 @@ type Link {
   text: String!
 }
 
+type Mutation {
+  authenticate(email: String!): User
+}
+
 type Query {
   viewer: User!
 }

@@ -6,7 +6,8 @@
     "lib": ["esnext"],
     "esModuleInterop": true,
     "allowJs": true,
-    "module": "ESNext",
+    "module": "CommonJS",
+    "target": "esnext",
     "moduleResolution": "node"
   },
   "include": [

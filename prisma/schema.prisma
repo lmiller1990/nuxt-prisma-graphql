@@ -12,13 +12,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  username String
+  username String?
   email    String  @unique
-  password String
   verified Boolean @default(false)
   pro      Boolean @default(false)
   links    Link[]
-  themeId  Int
 }
 
 model Link {
