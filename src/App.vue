@@ -3,7 +3,6 @@ import Main from './components/Main.vue'
 import { useRouter } from 'vue-router';
 import { useAuth, AppState } from './composables/auth'
 import { createClient, provideClient } from "@urql/vue";
-import { bus } from './emitter';
 
 const client = createClient({
   url: 'http://localhost:8080/graphql',

@@ -25,8 +25,8 @@ mutation Authenticate ($email: String!) {
 const result = useQuery({ query: AppDocument })
 const authenticate = useMutation(AuthenticateDocument)
 
-bus.on('authenticated', (email: string) => {
-  authenticate.executeMutation({ email })
+bus.on('authenticated', async (email: string) => {
+  await authenticate.executeMutation({ email })
   result.executeQuery()
 })
 
