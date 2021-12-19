@@ -4,7 +4,7 @@ type Unwrap<T> = T extends Promise<infer V> ? V : T
 
 export class Context {
   prisma = new PrismaClient({
-    log: ["query"],
+    // log: ["query"],
   });
   viewer?: Unwrap<ReturnType<typeof this.prisma.user["findFirst"]>>;
 }

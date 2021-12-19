@@ -60,6 +60,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     authenticate: NexusGenRootTypes['User'] | null; // User
+    logout: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
     viewer: NexusGenRootTypes['User'] | null; // User
@@ -80,6 +81,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     authenticate: 'User'
+    logout: 'User'
   }
   Query: { // field return type name
     viewer: 'User'

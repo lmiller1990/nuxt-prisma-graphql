@@ -52,6 +52,7 @@ export const Mutation = mutationType({
         });
 
         if (user) {
+          console.log('existing user', user)
           ctx.viewer = user;
           return ctx.viewer;
         }
@@ -65,8 +66,17 @@ export const Mutation = mutationType({
           },
         });
 
+        console.log('new', user)
         return ctx.viewer;
       },
     });
+
+    t.field('logout', {
+      type: 'User',
+      resolve: (source, args, ctx) => {
+        ctx.viewer = null
+        return ctx.viewer
+      }
+    })
   },
 });

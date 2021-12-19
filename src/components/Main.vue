@@ -2,7 +2,7 @@
 import { useAuth } from "../composables/auth";
 import Links from './Links.vue'
 import { gql, useMutation, useQuery } from '@urql/vue'
-import { AppDocument, AuthenticateDocument } from '../generated/graphql';
+import { AppDocument, AuthenticateDocument, LogoutDocument } from '../generated/graphql';
 import { bus } from "../emitter";
 
 gql`
@@ -22,23 +22,33 @@ mutation Authenticate ($email: String!) {
 }
 `
 
+gql`
+mutation Logout {
+  logout {
+    __typename
+  }
+}
+`
+
 const result = useQuery({ query: AppDocument })
 const authenticate = useMutation(AuthenticateDocument)
+const destroySession = useMutation(LogoutDocument)
 
 bus.on('authenticated', async (email: string) => {
   await authenticate.executeMutation({ email })
-  result.executeQuery()
+  result.executeQuery({ requestPolicy: 'network-only' }).then(console.log)
 })
 
-const { user, login, logout, info } = useAuth();
+const logout = async () => {
+  await destroySession.executeMutation({}) 
+  _logout()
+}
+
+const { user, login, logout: _logout, info } = useAuth();
 </script>
 
 <template>
-  <div>Error {{ info.error }}</div>
-
-  <div>loading {{ info.loading }}</div>
-
-  <div>user {{ user }}</div>
+  <div>Welcome, {{ result?.data?.value?.viewer?.email }}</div>
 
   <button @click="login()">Login</button>
   <button @click="logout()">Logout</button>

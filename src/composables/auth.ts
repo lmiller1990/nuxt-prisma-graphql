@@ -37,7 +37,10 @@ export function useAuth() {
 
   watch(user, (user) => {
     if (user?.email) {
+      console.log('auth!!!', user.email)
       bus.emit('authenticated', user.email)
+    } else {
+      // logged out
     }
   })
 
