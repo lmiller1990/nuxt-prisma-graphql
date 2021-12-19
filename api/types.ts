@@ -41,33 +41,10 @@ export const Mutation = mutationType({
         email: nonNull(stringArg()),
       },
       resolve: async (source, args, ctx) => {
-        console.log('email!!!', args.email)
-        const user = await ctx.prisma.user.findFirst({
-          where: {
-            email: args.email,
-          },
-          include: {
-            links: true,
-          },
-        });
+        // console.log('email!!!', args.email)
 
-        if (user) {
-          console.log('existing user', user)
-          ctx.viewer = user;
-          return ctx.viewer;
-        }
-
-        ctx.viewer = await ctx.prisma.user.create({
-          data: {
-            email: args.email,
-          },
-          include: {
-            links: true,
-          },
-        });
-
-        console.log('new', user)
-        return ctx.viewer;
+        // console.log('new', user)
+        // return ctx.viewer;
       },
     });
 

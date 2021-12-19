@@ -31,20 +31,23 @@ mutation Logout {
 `
 
 const result = useQuery({ query: AppDocument })
-const authenticate = useMutation(AuthenticateDocument)
+// const authenticate = useMutation(AuthenticateDocument)
 const destroySession = useMutation(LogoutDocument)
 
+const getuser = () => result.executeQuery({})
+
 bus.on('authenticated', async (email: string) => {
-  await authenticate.executeMutation({ email })
-  result.executeQuery({ requestPolicy: 'network-only' }).then(console.log)
+  // await authenticate.executeMutation({ email })
+  // result.executeQuery({ requestPolicy: 'network-only' }).then(console.log)
 })
 
 const logout = async () => {
-  await destroySession.executeMutation({}) 
+  // await destroySession.executeMutation({}) 
   _logout()
 }
 
-const { user, login, logout: _logout, info } = useAuth();
+const { user, login, logout: _logout, info, authenticate } = useAuth();
+
 </script>
 
 <template>
@@ -52,6 +55,7 @@ const { user, login, logout: _logout, info } = useAuth();
 
   <button @click="login()">Login</button>
   <button @click="logout()">Logout</button>
+  <button @click="getuser()">get user</button>
 
   <Links 
     v-if="result.data.value?.viewer" 
