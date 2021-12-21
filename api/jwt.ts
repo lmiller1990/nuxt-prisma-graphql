@@ -41,7 +41,6 @@ export async function requiresAuth(req: Req, res: Response, next: NextFunction) 
   }
 
   const payload = verifyPayload(token);
-  console.log('email', payload, req.prisma)
 
   const user = await req.prisma?.user.findFirst({
     where: {

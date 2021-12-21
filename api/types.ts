@@ -27,7 +27,8 @@ export const Query = queryType({
     t.field("viewer", {
       type: "User",
       resolve: (src, args, ctx) => {
-        return ctx.viewer ?? null;
+        console.log('ctx.user', ctx.user)
+        return ctx.user ?? null;
       },
     });
   },
@@ -41,18 +42,13 @@ export const Mutation = mutationType({
         email: nonNull(stringArg()),
       },
       resolve: async (source, args, ctx) => {
-        // console.log('email!!!', args.email)
-
-        // console.log('new', user)
-        // return ctx.viewer;
       },
     });
 
     t.field('logout', {
       type: 'User',
       resolve: (source, args, ctx) => {
-        ctx.viewer = null
-        return ctx.viewer
+        return ctx.user
       }
     })
   },

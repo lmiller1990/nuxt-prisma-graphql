@@ -1,13 +1,11 @@
 import { graphqlHTTP } from "express-graphql";
 import express, { NextFunction, Request, Response } from "express";
 import { graphqlSchema } from "./schema";
-// import { Context } from './context';
 import cors from "cors";
 import bodyParser from "body-parser";
 import { PrismaClient } from "@prisma/client";
-import fs from 'fs'
-import path from "path";
 import { requiresAuth } from './jwt'
+import { Context } from "./context";
 
 export interface User {
   id: number
@@ -21,7 +19,7 @@ export interface Req extends Request {
 }
 
 
-const prisma = new PrismaClient({});
+export const prisma = new PrismaClient({});
 
 function addPrisma (req: Req, res: Response, next: NextFunction) {
   req.prisma = prisma
@@ -34,15 +32,6 @@ app.use(cors());
 app.use(addPrisma)
 app.use(requiresAuth)
 
-export class Context {
-  constructor(private user: User) {
-  }
-
-  get prisma () {
-    return prisma
-  }
-}
-
 app.use(
   "/graphql",
   // @ts-ignore
@@ -51,6 +40,8 @@ app.use(
       res.statusCode = 401
       return res.end()
     }
+
+    console.log('user', req.user)
 
     return {
       schema: graphqlSchema,
