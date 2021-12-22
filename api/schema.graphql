@@ -3,13 +3,14 @@
 
 
 type Link {
+  href: String!
   id: Int!
   order: Int!
   text: String!
 }
 
 type Mutation {
-  createLink(order: Int!, text: String!): User
+  createLink(href: String!, order: Int!, text: String!): User
 }
 
 type Query {

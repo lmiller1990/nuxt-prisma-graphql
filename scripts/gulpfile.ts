@@ -8,22 +8,21 @@ async function serverDev () {
 }
 
 async function gqlCodegen () {
-  const dfd = pDefer()
   const w = chokidar.watch('./src/**/*.vue')
 
   w.on('all', () => {
     const out = spawn('yarn', ['gql:codegen'], { stdio: 'inherit' })
     out.on('data', () => {
-      dfd.resolve()
+    })
+    out.on('error', (err) => {
+      console.error('gql:codegen', err)
     })
   })
-
-  return dfd.promise
 }
 
 async function nexusTypegenWatch () {
   const dfd = pDefer()
-  const w = chokidar.watch('./api/types.ts')
+  const w = chokidar.watch('./api/schema.ts')
 
   w.on('all', () => {
     const out = spawn('yarn', ['nexus:dev'], { stdio: 'inherit' })
@@ -44,6 +43,17 @@ async function rebuildPrisma () {
   return dfd.promise
 }
 
+async function tailwindDev () {
+  const dfd = pDefer()
+  const s = spawn("yarn", ["tailwindcss", "-i", "./src/index.css", "-o", "./dist/output.css", "--watch"], { stdio: "inherit" });
+  s.on('exit', () => {
+    console.log("Watching tailwind")
+    dfd.resolve()
+  })
+
+  return dfd.promise
+}
+
 async function startViteDevServer () {
   spawn('yarn', ['vite:dev'], { stdio: 'inherit' })
 }
@@ -51,11 +61,14 @@ async function startViteDevServer () {
 gulp.task("dev:watch", gulp.series(
   rebuildPrisma,
   gulp.parallel(
+    tailwindDev,
     startViteDevServer,
+  ),
+  gulp.series(
     nexusTypegenWatch,
+    gqlCodegen,
     serverDev,
-    gqlCodegen
-  )
+  ),
 ));
 
 gulp.task("dev", gulp.series("dev:watch"));

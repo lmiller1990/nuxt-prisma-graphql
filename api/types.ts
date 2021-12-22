@@ -19,6 +19,7 @@ export const gqlLink = objectType({
     t.field(Link.id);
     t.field(Link.text);
     t.field(Link.order);
+    t.field(Link.href);
   },
 });
 
@@ -45,6 +46,7 @@ export const Mutation = mutationType({
     t.field("createLink", {
       args: {
         text: nonNull(stringArg()),
+        href: nonNull(stringArg()),
         order: nonNull(intArg()),
       },
       type: "User",
@@ -57,7 +59,8 @@ export const Mutation = mutationType({
           data: {
             userId: ctx.user?.id,
             text: args.text,
-            order: args.order
+            order: args.order,
+            href: args.href
           }
         })
 

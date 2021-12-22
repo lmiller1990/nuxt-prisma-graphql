@@ -29,6 +29,7 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Link: { // root type
+    href: string; // String!
     id: number; // Int!
     order: number; // Int!
     text: string; // String!
@@ -54,6 +55,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Link: { // field return type
+    href: string; // String!
     id: number; // Int!
     order: number; // Int!
     text: string; // String!
@@ -74,6 +76,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Link: { // field return type name
+    href: 'String'
     id: 'Int'
     order: 'Int'
     text: 'String'
@@ -95,6 +98,7 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     createLink: { // args
+      href: string; // String!
       order: number; // Int!
       text: string; // String!
     }
