@@ -59,8 +59,7 @@ export interface NexusGenFieldTypes {
     text: string; // String!
   }
   Mutation: { // field return type
-    authenticate: NexusGenRootTypes['User'] | null; // User
-    logout: NexusGenRootTypes['User'] | null; // User
+    createLink: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
     viewer: NexusGenRootTypes['User'] | null; // User
@@ -80,8 +79,7 @@ export interface NexusGenFieldTypeNames {
     text: 'String'
   }
   Mutation: { // field return type name
-    authenticate: 'User'
-    logout: 'User'
+    createLink: 'User'
   }
   Query: { // field return type name
     viewer: 'User'
@@ -96,8 +94,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
-    authenticate: { // args
-      email: string; // String!
+    createLink: { // args
+      order: number; // Int!
+      text: string; // String!
     }
   }
 }

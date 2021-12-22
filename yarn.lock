@@ -1833,6 +1833,14 @@
     "@urql/core" ">=2.3.6"
     wonka "^4.0.14"
 
+"@urql/exchange-graphcache@^4.3.6":
+  version "4.3.6"
+  resolved "https://registry.yarnpkg.com/@urql/exchange-graphcache/-/exchange-graphcache-4.3.6.tgz#fea25b8877a704a9d65bdd29578fa6e9fd31bfa5"
+  integrity sha512-RDEi1954lcnwBK2dwQGaxOInuebZrRliz2v7aAuQasj49N9bWYrlSkBfELG14EzOL7NI23IUaeLeaDN7MouDJg==
+  dependencies:
+    "@urql/core" ">=2.3.6"
+    wonka "^4.0.14"
+
 "@urql/vue@^0.6.1":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@urql/vue/-/vue-0.6.1.tgz#bb315650c5158f862b4065a127690805c7191b79"

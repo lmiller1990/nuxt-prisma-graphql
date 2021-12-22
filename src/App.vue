@@ -3,13 +3,13 @@ import Main from "./components/Main.vue";
 import { useRouter } from "vue-router";
 import { useAuth, AppState } from "./composables/auth";
 import { createClient, provideClient, fetchExchange } from "@urql/vue";
-import { authExchange, AuthConfig } from "@urql/exchange-auth";
+import { cacheExchange } from '@urql/exchange-graphcache';
+import { authExchange } from "@urql/exchange-auth";
 import { Operation } from "@urql/core";
 
 const { authenticate, user, getIdTokenClaims } = useAuth();
 
 import { makeOperation } from "@urql/core";
-import { AppDocument } from "./generated/graphql";
 
 const addAuthToOperation = ({
   authState,
@@ -60,6 +60,13 @@ const client = createClient({
         return null;
       },
       addAuthToOperation,
+    }),
+    cacheExchange({
+      updates: {
+        // createLink: (result, args, cache, info) => {
+
+        // }
+      }
     }),
     fetchExchange,
   ],

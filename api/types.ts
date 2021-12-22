@@ -1,4 +1,4 @@
-import { mutationType, nonNull, objectType, queryType, stringArg } from "nexus";
+import { intArg, mutationType, nonNull, objectType, queryType, stringArg } from "nexus";
 import { Link, User } from "nexus-prisma";
 
 export const gqlUser = objectType({
@@ -27,29 +27,49 @@ export const Query = queryType({
     t.field("viewer", {
       type: "User",
       resolve: (src, args, ctx) => {
-        console.log('ctx.user', ctx.user)
-        return ctx.user ?? null;
+        return ctx.prisma.user.findFirst({
+          where: {
+            id: ctx.user?.id
+          },
+          include: {
+            links: true
+          }
+        })
       },
     });
   },
 });
 
 export const Mutation = mutationType({
-  definition(t) {
-    t.field("authenticate", {
-      type: "User",
+  definition (t) {
+    t.field("createLink", {
       args: {
-        email: nonNull(stringArg()),
+        text: nonNull(stringArg()),
+        order: nonNull(intArg()),
       },
-      resolve: async (source, args, ctx) => {
-      },
-    });
+      type: "User",
+      resolve: async (src, args, ctx) => {
+        if (!ctx.user) {
+          return null
+        }
 
-    t.field('logout', {
-      type: 'User',
-      resolve: (source, args, ctx) => {
-        return ctx.user
-      }
+        await ctx.prisma.link.create({
+          data: {
+            userId: ctx.user?.id,
+            text: args.text,
+            order: args.order
+          }
+        })
+
+        return ctx.prisma.user.findFirst({
+          where: {
+            id: ctx.user?.id
+          },
+          include: {
+            links: true
+          }
+        })
+      },
     })
-  },
+  }
 });

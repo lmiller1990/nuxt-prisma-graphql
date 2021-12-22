@@ -23,6 +23,7 @@
     "body-parser": "^1.19.1",
     "chokidar": "^3.5.2",
     "cors": "^2.8.5",
+    "debug": "^4.3.3",
     "execa": "^6.0.0",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
@@ -46,6 +47,7 @@
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.19.2",
     "@prisma/client": "3.5.0",
+    "@urql/exchange-graphcache": "^4.3.6",
     "@urql/vue": "^0.6.1",
     "events": "^3.3.0",
     "vue": "^3.2.16",
@@ -55,6 +57,7 @@
     "nexus:dev": "ts-node --transpile-only api/types.ts",
     "nexus:build": "tsc",
     "vite:dev": "vite",
+    "dev": "yarn gulp dev",
     "vite:build": "vue-tsc --noEmit && vite build",
     "vite:serve": "vite preview",
     "db:migrate": "prisma migrate dev",

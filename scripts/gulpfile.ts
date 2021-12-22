@@ -27,14 +27,6 @@ async function startViteDevServer () {
   spawn('yarn', ['vite:dev'], { stdio: 'inherit' })
 }
 
-
-// async function startGraphQLDev () {
-//   const s = spawn("yarn", ["nexus:dev"], { stdio: "inherit" });
-//   s.stdout?.on('data', data => {
-//     console.log(String(data))
-//   })
-// }
-
 gulp.task("dev:watch", gulp.series(
   rebuildPrisma,
   gulp.parallel(

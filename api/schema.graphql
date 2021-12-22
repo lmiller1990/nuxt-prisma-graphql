@@ -9,8 +9,7 @@ type Link {
 }
 
 type Mutation {
-  authenticate(email: String!): User
-  logout: User
+  createLink(order: Int!, text: String!): User
 }
 
 type Query {
