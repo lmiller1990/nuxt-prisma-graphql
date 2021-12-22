@@ -7,6 +7,20 @@ async function serverDev () {
   spawn("yarn", ["ts-node-dev", "--respawn", "--exit-child", "--transpile-only", "api/index.ts"], { stdio: "inherit" });
 }
 
+async function gqlCodegen () {
+  const dfd = pDefer()
+  const w = chokidar.watch('./src/**/*.vue')
+
+  w.on('all', () => {
+    const out = spawn('yarn', ['gql:codegen'], { stdio: 'inherit' })
+    out.on('data', () => {
+      dfd.resolve()
+    })
+  })
+
+  return dfd.promise
+}
+
 async function nexusTypegenWatch () {
   const dfd = pDefer()
   const w = chokidar.watch('./api/types.ts')
@@ -20,7 +34,14 @@ async function nexusTypegenWatch () {
 }
 
 async function rebuildPrisma () {
-  spawn("yarn", ["prisma", "generate"], { stdio: "inherit" });
+  const dfd = pDefer()
+  const s = spawn("yarn", ["prisma", "generate"], { stdio: "inherit" });
+  s.on('exit', () => {
+    console.log("Done rebuilding prisma")
+    dfd.resolve()
+  })
+
+  return dfd.promise
 }
 
 async function startViteDevServer () {
@@ -32,7 +53,8 @@ gulp.task("dev:watch", gulp.series(
   gulp.parallel(
     startViteDevServer,
     nexusTypegenWatch,
-    serverDev
+    serverDev,
+    gqlCodegen
   )
 ));
 
