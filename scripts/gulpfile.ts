@@ -29,7 +29,17 @@ async function nexusTypegenWatch () {
     out.on('data', () => {
       dfd.resolve()
     })
+
+    out.on('error', (err) => {
+      console.error('exit nexus typegen due to error', err)
+    })
+
+    out.on('exit', () => {
+      console.error('exit nexus typegen due to error')
+    })
   })
+
+  dfd.promise
 }
 
 async function rebuildPrisma () {
@@ -44,14 +54,7 @@ async function rebuildPrisma () {
 }
 
 async function tailwindDev () {
-  const dfd = pDefer()
-  const s = spawn("yarn", ["tailwindcss", "-i", "./src/index.css", "-o", "./dist/output.css", "--watch"], { stdio: "inherit" });
-  s.on('exit', () => {
-    console.log("Watching tailwind")
-    dfd.resolve()
-  })
-
-  return dfd.promise
+  spawn("yarn", ["tailwindcss", "-i", "./src/index.css", "-o", "./dist/output.css", "--watch"], { stdio: "inherit" });
 }
 
 async function startViteDevServer () {
@@ -67,8 +70,8 @@ gulp.task("dev:watch", gulp.series(
   gulp.series(
     nexusTypegenWatch,
     gqlCodegen,
-    serverDev,
   ),
+  serverDev,
 ));
 
 gulp.task("dev", gulp.series("dev:watch"));
