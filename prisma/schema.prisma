@@ -33,4 +33,5 @@ model Link {
   text   String
   order Int
   icon   String?
+  href String
 }
