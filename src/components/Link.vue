@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, ref, Ref, watch } from "vue";
 import { ValidatedLinkForm } from "../forms/models";
 import Input, { InputValidationResult } from "./Input.vue";
 
@@ -13,64 +12,29 @@ const emits = defineEmits<{
   (e: "update", id: number, key: LinkKey, val: string): void;
 }>();
 
-interface FormInput {
-  id: "href" | "text";
-  label: string;
-  type: "text";
-  val: Ref<string>;
-  validity: InputValidationResult;
-}
-
-const inputs = computed<FormInput[]>(() => {
-  return [
-    {
-      id: "href",
-      validity: {
-        valid: !props.link.href.error,
-        reason: props.link.href.error,
-      },
-      label: "Link",
-      val: ref(props.link.href.val || ""),
-      type: "text",
-    },
-    {
-      id: "text",
-      validity: {
-        valid: !props.link.text.error,
-        reason: props.link.text.error,
-      },
-      label: "Text",
-      val: ref(props.link.text.val || ""),
-      type: "text",
-    },
-  ];
-});
-
-watch(inputs.value[0].val, (val) => {
-  console.log(`updating`, props.link.id, val);
-  emits("update", props.link.id, "text", val);
-});
-
-watch(inputs.value[1].val, (val) => {
-  emits("update", props.link.id, "href", val);
-});
-
-const validity = computed<InputValidationResult>(() => {
-  return {
-    valid: !props.link.href.error,
-    reason: props.link.href.error,
-  };
+const validityFor = (attr: LinkKey): InputValidationResult => ({
+  valid: !props.link[attr].error,
+  reason: props.link[attr].error,
 });
 </script>
 
 <template>
-  <div class="shadow-xl">
+  <div class="p-2 m-2 rounded-md border border-gray-300">
+    <Input
+      :modelValue="props.link.text.val"
+      @update:modelValue="(val) => emits('update', props.link.id, 'text', val)"
+      label="Text"
+      :id="props.link.id.toString()"
+      :validity="validityFor('text')"
+      :required="true"
+    />
+
     <Input
       :modelValue="props.link.href.val"
-      @update:modelValue="(val) => $emit('update', props.link.id, 'href', val)"
+      @update:modelValue="(val) => emits('update', props.link.id, 'href', val)"
       label="Link"
       :id="props.link.id.toString()"
-      :validity="validity"
+      :validity="validityFor('href')"
       :required="true"
     />
   </div>

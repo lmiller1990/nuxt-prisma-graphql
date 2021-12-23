@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { useAuth } from "../composables/auth";
 import Links from './Links.vue'
-import CreateLink from './CreateLink.vue'
+import FloatingButton from './FloatingButton.vue'
+// import CreateLink from './CreateLink.vue'
 import { gql, useQuery } from '@urql/vue'
 import { AppDocument } from '../generated/graphql';
 
@@ -21,11 +22,12 @@ const getuser = () => result.executeQuery({})
 
 const { login, logout } = useAuth();
 
+const formValid = false
 </script>
 
 <template>
   <div>Welcome, {{ result?.data?.value?.viewer?.email }}</div>
-
+  
   <button @click="login()">Login</button>
   <button @click="logout()">Logout</button>
   <button @click="getuser()">get user</button>
@@ -35,5 +37,19 @@ const { login, logout } = useAuth();
     :gql="result?.data.value.viewer" 
   />
 
+  <div 
+    id="lock-to-bottom" 
+    class="absolute inset-x-0 bottom-4 mx-2"
+  >
+    <FloatingButton :disabled="!formValid">
+      Save and Preview
+    </FloatingButton>
+  </div>
+
   <!-- <CreateLink /> -->
 </template>
+
+<style>
+#lock-to-bottom {
+}
+</style>

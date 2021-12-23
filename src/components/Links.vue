@@ -48,5 +48,4 @@ const handleUpdate = (id: number, key: LinkKey, val: string) => {
       @update="(id, key, val) => handleUpdate(id, key, val)"
     />
   </div>
-  {{ orderedForm }}
 </template>
