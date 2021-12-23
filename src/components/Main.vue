@@ -35,5 +35,5 @@ const { login, logout } = useAuth();
     :gql="result?.data.value.viewer" 
   />
 
-  <CreateLink />
+  <!-- <CreateLink /> -->
 </template>

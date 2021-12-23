@@ -28,7 +28,9 @@ function createLink () {
 </script>
 
 <template>
-  <form @submit.prevent="createLink">
+  <form 
+    @submit.prevent="createLink"
+  >
     <button type="submit">Submit</button>
   </form>
 </template>
