@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { gql } from "@urql/vue";
+import { gql, useMutation } from "@urql/vue";
 import { computed, ref, watchEffect } from "vue";
 import { LinkForm, validateLinkForm } from "../forms/models";
-import { LinksFragment } from "../generated/graphql";
+import { LinksFragment, SaveLinksDocument } from "../generated/graphql";
+import FloatingButton from './FloatingButton.vue'
 import Link, { LinkKey } from "./Link.vue";
 
 gql`
@@ -16,13 +17,21 @@ gql`
   }
 `;
 
+gql`
+mutation SaveLinks ($links: [SaveLinkInput!]!) {
+  saveLinks (links: $links) {
+    id
+    email
+    ...Links
+  }
+}
+`
+
+const saveLinks = useMutation(SaveLinksDocument)
+
 const props = defineProps<{
   gql: LinksFragment;
 }>();
-
-const emits = defineEmits<{
-  (e: 'linksUpdated', allValid: boolean): void
-}>()
 
 const form = ref<LinkForm[]>([]);
 
@@ -39,14 +48,21 @@ const orderedForm = computed(() => {
   return validateLinkForm(form.value).sort((x, y) => x.order - y.order);
 });
 
-watchEffect(() => {
-  const allValid = orderedForm.value.every(x => !x.href.error && !x.text.error)
-  emits('linksUpdated', allValid)
-})
+const formValid = computed(() => orderedForm.value.every(x => !x.href.error && !x.text.error))
 
 const handleUpdate = (id: number, key: LinkKey, val: string) => {
   form.value.find((x) => x.id === id)![key] = val;
 };
+
+function handleSaveAndPreview () {
+  saveLinks.executeMutation({
+    links: form.value.map(x => ({
+      id: x.id,
+      href: x.href,
+      text: x.text
+    }))
+  })
+}
 </script>
 
 <template>
@@ -56,5 +72,17 @@ const handleUpdate = (id: number, key: LinkKey, val: string) => {
       :key="link.id"
       @update="(id, key, val) => handleUpdate(id, key, val)"
     />
+  </div>
+
+  <div 
+    id="lock-to-bottom" 
+    class="absolute inset-x-0 bottom-4 mx-2"
+  >
+    <FloatingButton 
+      :disabled="!formValid"
+      @click="handleSaveAndPreview"
+    >
+      Save and Preview
+    </FloatingButton>
   </div>
 </template>

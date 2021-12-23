@@ -11,10 +11,17 @@ type Link {
 
 type Mutation {
   createLink(href: String!, order: Int!, text: String!): User
+  saveLinks(links: [SaveLinkInput!]!): User
 }
 
 type Query {
   viewer: User
+}
+
+input SaveLinkInput {
+  href: String!
+  id: Int!
+  text: String!
 }
 
 type User {

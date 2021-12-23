@@ -14,6 +14,11 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  SaveLinkInput: { // input type
+    href: string; // String!
+    id: number; // Int!
+    text: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -62,6 +67,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createLink: NexusGenRootTypes['User'] | null; // User
+    saveLinks: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
     viewer: NexusGenRootTypes['User'] | null; // User
@@ -83,6 +89,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createLink: 'User'
+    saveLinks: 'User'
   }
   Query: { // field return type name
     viewer: 'User'
@@ -102,6 +109,9 @@ export interface NexusGenArgTypes {
       order: number; // Int!
       text: string; // String!
     }
+    saveLinks: { // args
+      links: NexusGenInputs['SaveLinkInput'][]; // [SaveLinkInput!]!
+    }
   }
 }
 
@@ -113,7 +123,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = never;
 

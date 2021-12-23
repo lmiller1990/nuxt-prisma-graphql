@@ -1,4 +1,14 @@
-import { intArg, mutationType, nonNull, objectType, queryType, stringArg } from "nexus";
+import {
+  arg,
+  inputObjectType,
+  intArg,
+  list,
+  mutationType,
+  nonNull,
+  objectType,
+  queryType,
+  stringArg,
+} from "nexus";
 import { Link, User } from "nexus-prisma";
 
 export const gqlUser = objectType({
@@ -30,19 +40,54 @@ export const Query = queryType({
       resolve: (src, args, ctx) => {
         return ctx.prisma.user.findFirst({
           where: {
-            id: ctx.user?.id
+            id: ctx.user?.id,
           },
           include: {
-            links: true
-          }
-        })
+            links: true,
+          },
+        });
       },
     });
   },
 });
 
+export const SaveLinkInput = inputObjectType({
+  name: "SaveLinkInput",
+  definition(t) {
+    t.field(Link.id);
+    t.field(Link.text);
+    t.field(Link.href);
+  },
+});
+
 export const Mutation = mutationType({
-  definition (t) {
+  definition(t) {
+    t.field("saveLinks", {
+      type: "User",
+      args: {
+        links: nonNull(list(nonNull(SaveLinkInput))),
+      },
+      resolve: async (src, args, ctx) => {
+        await Promise.all(args.links.map(({ id, ...data }) => {
+          return ctx.prisma.link.update({
+            where: {
+              id,
+            },
+            data,
+          });
+        }))
+
+        return ctx.prisma.user.findFirst({
+          where: {
+            id: ctx.user?.id,
+          },
+          include: {
+            links: true,
+          },
+        });
+      },
+    });
+
     t.field("createLink", {
       args: {
         text: nonNull(stringArg()),
@@ -52,7 +97,7 @@ export const Mutation = mutationType({
       type: "User",
       resolve: async (src, args, ctx) => {
         if (!ctx.user) {
-          return null
+          return null;
         }
 
         await ctx.prisma.link.create({
@@ -60,19 +105,19 @@ export const Mutation = mutationType({
             userId: ctx.user?.id,
             text: args.text,
             order: args.order,
-            href: args.href
-          }
-        })
+            href: args.href,
+          },
+        });
 
         return ctx.prisma.user.findFirst({
           where: {
-            id: ctx.user?.id
+            id: ctx.user?.id,
           },
           include: {
-            links: true
-          }
-        })
+            links: true,
+          },
+        });
       },
-    })
-  }
+    });
+  },
 });

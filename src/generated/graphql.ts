@@ -14,6 +14,12 @@ export type Scalars = {
   Float: number;
 };
 
+export type SaveLinkInput = {
+  readonly href: Scalars['String'];
+  readonly id: Scalars['Int'];
+  readonly text: Scalars['String'];
+};
+
 export type CreateLinkMutationVariables = Exact<{
   text: Scalars['String'];
   href: Scalars['String'];
@@ -25,6 +31,13 @@ export type CreateLinkMutation = { readonly __typename?: 'Mutation', readonly cr
 
 export type LinksFragment = { readonly __typename?: 'User', readonly links: ReadonlyArray<{ readonly __typename?: 'Link', readonly id: number, readonly text: string, readonly href: string, readonly order: number }> };
 
+export type SaveLinksMutationVariables = Exact<{
+  links: ReadonlyArray<SaveLinkInput> | SaveLinkInput;
+}>;
+
+
+export type SaveLinksMutation = { readonly __typename?: 'Mutation', readonly saveLinks: { readonly __typename?: 'User', readonly id: number, readonly email: string, readonly links: ReadonlyArray<{ readonly __typename?: 'Link', readonly id: number, readonly text: string, readonly href: string, readonly order: number }> } | null | undefined };
+
 export type AppQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -32,4 +45,5 @@ export type AppQuery = { readonly __typename?: 'Query', readonly viewer: { reado
 
 export const LinksFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Links"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"links"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"href"}},{"kind":"Field","name":{"kind":"Name","value":"order"}}]}}]}}]} as unknown as DocumentNode<LinksFragment, unknown>;
 export const CreateLinkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateLink"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"text"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"href"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"order"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createLink"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"text"},"value":{"kind":"Variable","name":{"kind":"Name","value":"text"}}},{"kind":"Argument","name":{"kind":"Name","value":"href"},"value":{"kind":"Variable","name":{"kind":"Name","value":"href"}}},{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"Variable","name":{"kind":"Name","value":"order"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"links"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"text"}}]}}]}}]}}]} as unknown as DocumentNode<CreateLinkMutation, CreateLinkMutationVariables>;
+export const SaveLinksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SaveLinks"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"links"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SaveLinkInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"saveLinks"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"links"},"value":{"kind":"Variable","name":{"kind":"Name","value":"links"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"Links"}}]}}]}},...LinksFragmentDoc.definitions]} as unknown as DocumentNode<SaveLinksMutation, SaveLinksMutationVariables>;
 export const AppDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"App"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"viewer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"Links"}}]}}]}},...LinksFragmentDoc.definitions]} as unknown as DocumentNode<AppQuery, AppQueryVariables>;

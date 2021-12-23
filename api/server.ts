@@ -40,7 +40,7 @@ app.use(
       return res.end()
     }
 
-    console.log('user', req.user)
+    console.log(`User: ${req.user.email}`)
 
     return {
       schema: graphqlSchema,
