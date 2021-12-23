@@ -5,6 +5,7 @@ import FloatingButton from './FloatingButton.vue'
 // import CreateLink from './CreateLink.vue'
 import { gql, useQuery } from '@urql/vue'
 import { AppDocument } from '../generated/graphql';
+import { ref } from "vue";
 
 gql`
 query App {
@@ -22,7 +23,7 @@ const getuser = () => result.executeQuery({})
 
 const { login, logout } = useAuth();
 
-const formValid = false
+const formValid = ref(false)
 </script>
 
 <template>
@@ -35,13 +36,16 @@ const formValid = false
   <Links 
     v-if="result.data.value?.viewer" 
     :gql="result?.data.value.viewer" 
+    @linksUpdated="allValid => formValid = allValid"
   />
 
   <div 
     id="lock-to-bottom" 
     class="absolute inset-x-0 bottom-4 mx-2"
   >
-    <FloatingButton :disabled="!formValid">
+    <FloatingButton 
+      :disabled="!formValid"
+    >
       Save and Preview
     </FloatingButton>
   </div>

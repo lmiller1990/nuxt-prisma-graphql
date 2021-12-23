@@ -20,6 +20,10 @@ const props = defineProps<{
   gql: LinksFragment;
 }>();
 
+const emits = defineEmits<{
+  (e: 'linksUpdated', allValid: boolean): void
+}>()
+
 const form = ref<LinkForm[]>([]);
 
 watchEffect(() => {
@@ -34,6 +38,11 @@ watchEffect(() => {
 const orderedForm = computed(() => {
   return validateLinkForm(form.value).sort((x, y) => x.order - y.order);
 });
+
+watchEffect(() => {
+  const allValid = orderedForm.value.every(x => !x.href.error && !x.text.error)
+  emits('linksUpdated', allValid)
+})
 
 const handleUpdate = (id: number, key: LinkKey, val: string) => {
   form.value.find((x) => x.id === id)![key] = val;
