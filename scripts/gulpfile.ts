@@ -3,75 +3,101 @@ import { spawn } from "child_process";
 import pDefer from "p-defer";
 import chokidar from "chokidar";
 
-async function serverDev () {
-  spawn("yarn", ["ts-node-dev", "--respawn", "--exit-child", "--transpile-only", "api/index.ts"], { stdio: "inherit" });
+async function serverDev() {
+  spawn(
+    "yarn",
+    [
+      "ts-node-dev",
+      "--respawn",
+      "--exit-child",
+      "--transpile-only",
+      "index.ts",
+    ],
+    { stdio: "inherit", cwd: "packages/app-server" }
+  );
 }
 
-async function gqlCodegen () {
-  const w = chokidar.watch('./src/**/*.vue')
+async function gqlCodegen() {
+  const w = chokidar.watch("./src/**/*.vue");
 
-  w.on('all', () => {
-    const out = spawn('yarn', ['gql:codegen'], { stdio: 'inherit' })
-    out.on('data', () => {
-    })
-    out.on('error', (err) => {
-      console.error('gql:codegen', err)
-    })
-  })
+  w.on("all", () => {
+    const out = spawn("yarn", ["gql:codegen"], {
+      stdio: "inherit",
+      cwd: "packages/app-client",
+    });
+    out.on("data", () => {});
+    out.on("error", (err) => {
+      console.error("gql:codegen", err);
+    });
+  });
 }
 
-async function nexusTypegenWatch () {
-  const dfd = pDefer()
-  const w = chokidar.watch('./api/schema.ts')
+async function nexusTypegenWatch() {
+  const dfd = pDefer();
+  const w = chokidar.watch("./packages/app-server/api/schema.ts");
 
-  w.on('all', () => {
-    const out = spawn('yarn', ['nexus:dev'], { stdio: 'inherit' })
-    out.on('data', () => {
-      dfd.resolve()
-    })
+  w.on("all", () => {
+    const out = spawn("yarn", ["nexus:dev"], {
+      stdio: "inherit",
+      cwd: "packages/app-server",
+    });
+    out.on("data", () => {
+      dfd.resolve();
+    });
 
-    out.on('error', (err) => {
-      console.error('exit nexus typegen due to error', err)
-    })
+    out.on("error", (err) => {
+      console.error("exit nexus typegen due to error", err);
+    });
 
-    out.on('exit', () => {
-      console.error('exit nexus typegen due to error')
-    })
-  })
+    out.on("exit", () => {
+      console.error("exit nexus typegen due to error");
+    });
+  });
 
-  dfd.promise
+  dfd.promise;
 }
 
-async function rebuildPrisma () {
-  const dfd = pDefer()
-  const s = spawn("yarn", ["prisma", "generate"], { stdio: "inherit" });
-  s.on('exit', () => {
-    console.log("Done rebuilding prisma")
-    dfd.resolve()
-  })
+async function rebuildPrisma() {
+  const dfd = pDefer();
+  const s = spawn("yarn", ["prisma", "generate"], {
+    stdio: "inherit",
+    cwd: "packages/app-server",
+  });
+  s.on("exit", () => {
+    console.log("Done rebuilding prisma");
+    dfd.resolve();
+  });
 
-  return dfd.promise
+  return dfd.promise;
 }
 
-async function tailwindDev () {
-  spawn("yarn", ["tailwindcss", "-i", "./src/index.css", "-o", "./dist/output.css", "--watch"], { stdio: "inherit" });
+async function tailwindDev() {
+  spawn(
+    "yarn",
+    [
+      "tailwindcss",
+      "-i",
+      "./src/index.css",
+      "-o",
+      ".//dist/output.css",
+      "--watch",
+    ],
+    { stdio: "inherit", cwd: "packages/app-client" }
+  );
 }
 
-async function startViteDevServer () {
-  spawn('yarn', ['vite:dev'], { stdio: 'inherit' })
+async function startViteDevServer() {
+  spawn("yarn", ["vite:dev"], { stdio: "inherit", cwd: "packages/app-client" });
 }
 
-gulp.task("dev:watch", gulp.series(
-  rebuildPrisma,
-  gulp.parallel(
-    tailwindDev,
-    startViteDevServer,
-  ),
+gulp.task(
+  "dev:watch",
   gulp.series(
-    nexusTypegenWatch,
-    gqlCodegen,
-  ),
-  serverDev,
-));
+    rebuildPrisma,
+    gulp.parallel(tailwindDev, startViteDevServer),
+    gulp.series(nexusTypegenWatch, gqlCodegen),
+    serverDev
+  )
+);
 
 gulp.task("dev", gulp.series("dev:watch"));
