@@ -13,10 +13,7 @@
     "vue-tsc": "^0.3.0"
   },
   "scripts": {
-    "gql:codegen": "graphql-codegen --config ${PWD}/graphql-codegen.yml",
-    "test:unit": "yarn jest",
-    "vite:build": "vue-tsc --noEmit && vite build",
-    "vite:dev": "vite",
-    "vite:serve": "vite preview"
+    "build": "vite build",
+    "dev": "vite"
   }
 }
