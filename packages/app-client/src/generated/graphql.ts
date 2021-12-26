@@ -21,6 +21,7 @@ export type SaveLinkInput = {
 };
 
 export type ThemeName =
+  | 'desert'
   | 'forest';
 
 export type CreateLinkMutationVariables = Exact<{

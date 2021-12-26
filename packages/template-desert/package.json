@@ -1,5 +1,5 @@
 {
-  "name": "@packages/template-forest",
+  "name": "@packages/template-desert",
   "dependencies": {
     "vue": "^3.2.16"
   },

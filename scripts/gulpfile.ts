@@ -19,12 +19,19 @@ async function serverDev() {
 
 async function gqlCodegen() {
   const w = chokidar.watch("./src/**/*.vue");
-
-  w.on("all", () => {
-    const out = spawn("yarn", ["gql:codegen"], {
+  const runCodegen = () =>
+    spawn("yarn", ["gql:codegen"], {
       stdio: "inherit",
       cwd: "packages/app-client",
     });
+
+  w.on("ready", () => {
+    console.log('Running GraphQL Codegen...')
+    runCodegen();
+  });
+
+  w.on("all", () => {
+    const out = runCodegen();
     out.on("data", () => {});
     out.on("error", (err) => {
       console.error("gql:codegen", err);

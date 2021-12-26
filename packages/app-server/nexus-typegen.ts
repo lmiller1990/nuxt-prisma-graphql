@@ -22,7 +22,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  ThemeName: "forest"
+  ThemeName: "desert" | "forest"
 }
 
 export interface NexusGenScalars {

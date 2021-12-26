@@ -1,5 +1,4 @@
 import {
-  arg,
   enumType,
   inputObjectType,
   intArg,
@@ -13,6 +12,8 @@ import {
 import fs from "fs";
 import { Link, User } from "nexus-prisma";
 import path from "path";
+import { gqlThemeName } from './scripts/generateTemplateTypes'
+export * from './scripts/generateTemplateTypes'
 
 export const gqlUser = objectType({
   name: User.$name,
@@ -35,11 +36,6 @@ export const gqlLink = objectType({
     t.field(Link.href);
   },
 });
-
-export const gqlThemeName = enumType({
-  name: 'ThemeName',
-  members: ['forest']
-})
 
 export const Query = queryType({
   definition(t) {

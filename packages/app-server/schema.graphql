@@ -26,6 +26,7 @@ input SaveLinkInput {
 }
 
 enum ThemeName {
+  desert
   forest
 }
 
