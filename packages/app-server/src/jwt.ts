@@ -5,7 +5,7 @@ import { NextFunction, Response } from "express";
 import { Req } from "./server";
 
 const cert = fs.readFileSync(
-  path.resolve(__dirname, "..", "..", ".auth-cert"),
+  path.resolve(__dirname, "..", "..", "..", ".auth-cert"),
   "utf-8"
 );
 

@@ -1,5 +1,5 @@
 overwrite: true
-schema: '../app-server/schema.graphql'
+schema: '../app-server/src/schema.graphql'
 documents: 'src/**/*.vue'
 generates:
   src/generated/graphql.ts:

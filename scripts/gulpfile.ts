@@ -11,6 +11,7 @@ async function serverDev() {
       "--respawn",
       "--exit-child",
       "--transpile-only",
+      "src",
       "index.ts",
     ],
     { stdio: "inherit", cwd: "packages/app-server" }
@@ -41,7 +42,7 @@ async function gqlCodegen() {
 
 async function nexusTypegenWatch() {
   const dfd = pDefer();
-  const w = chokidar.watch("./packages/app-server/api/schema.ts");
+  const w = chokidar.watch("./packages/app-server/src/schema.ts");
 
   w.on("all", () => {
     const out = spawn("yarn", ["nexus:dev"], {
@@ -94,7 +95,7 @@ async function tailwindDev() {
 }
 
 async function startViteDevServer() {
-  spawn("yarn", ["vite:dev"], { stdio: "inherit", cwd: "packages/app-client" });
+  spawn("yarn", ["dev"], { stdio: "inherit", cwd: "packages/app-client" });
 }
 
 gulp.task(

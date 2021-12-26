@@ -1,5 +1,6 @@
 {
   "name": "@packages/app-server",
+  "private": true,
   "devDependencies": {
     "@types/body-parser": "^1.19.2",
     "@types/cors": "^2.8.12",
@@ -20,14 +21,19 @@
     "p-defer": "^3.0.0",
     "prisma": "3.5.0",
     "prisma-upgrade": "^0.0.43",
+    "rimraf": "3.0.2",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.2"
   },
   "scripts": {
-    "nexus:dev": "ts-node --transpile-only api/types.ts",
-    "nexus:build": "tsc",
+    "nexus:dev": "ts-node --transpile-only src/types.ts",
+    "build": "yarn clean && yarn db:migrate && yarn db:generate && yarn ts-node --transpile-only src/schema.ts && tsc -p .",
+    "clean": "rimraf src/**/*.js && rimraf src/**/*.js.map || echo 'done'",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "3.5.0"
   }
 }

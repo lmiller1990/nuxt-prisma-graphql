@@ -1,5 +1,4 @@
 import {
-  enumType,
   inputObjectType,
   intArg,
   list,
@@ -12,9 +11,9 @@ import {
 import fs from "fs";
 import { Link, User } from "nexus-prisma";
 import path from "path";
-import { gqlThemeName } from "./scripts/generateTemplateTypes";
+import { gqlThemeName } from "../scripts/generateTemplateTypes";
 import { Context } from "./context";
-export * from "./scripts/generateTemplateTypes";
+export * from "../scripts/generateTemplateTypes";
 
 const prismaUser = (ctx: Context) =>
   ctx.prisma.user.findFirst({

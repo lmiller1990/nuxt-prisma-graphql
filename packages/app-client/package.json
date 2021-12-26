@@ -39,8 +39,7 @@
   "scripts": {
     "gql:codegen": "graphql-codegen --config ${PWD}/graphql-codegen.yml",
     "test:unit": "yarn jest",
-    "vite:build": "vue-tsc --noEmit && vite build",
-    "vite:dev": "vite",
-    "vite:serve": "vite preview"
+    "build": "yarn gql:codegen && vue-tsc --noEmit && vite build",
+    "dev": "vite"
   }
 }
