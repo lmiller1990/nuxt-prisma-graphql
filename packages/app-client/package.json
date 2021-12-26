@@ -39,8 +39,9 @@
   },
   "scripts": {
     "gql:codegen": "graphql-codegen --config ${PWD}/graphql-codegen.yml",
+    "build:tailwind": "tailwindcss -i ./src/index.css -o ./src/output.css",
     "test:unit": "yarn jest",
-    "build": "yarn clean && yarn gql:codegen && vue-tsc --noEmit && vite build",
+    "build": "yarn clean && yarn gql:codegen && vue-tsc --noEmit && yarn build:tailwind vite build",
     "dev": "vite",
     "clean": "rimraf src/**/*.js && rimraf src/**/*.js.map || echo 'done'"
   }

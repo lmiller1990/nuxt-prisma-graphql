@@ -87,7 +87,7 @@ async function tailwindDev() {
       "-i",
       "./src/index.css",
       "-o",
-      ".//dist/output.css",
+      "./src/output.css",
       "--watch",
     ],
     { stdio: "inherit", cwd: "packages/app-client" }
