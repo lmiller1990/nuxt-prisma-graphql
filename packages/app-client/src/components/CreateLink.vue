@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { gql, useMutation } from '@urql/vue'
 import { CreateLinkDocument } from '../generated/graphql';
+import CreateButton from './CreateButton.vue';
 
 gql`
 mutation CreateLink ($text: String!, $href: String!, $order: Int!) {
@@ -19,9 +20,9 @@ const createLinkMut = useMutation(CreateLinkDocument)
 
 function createLink () {
   createLinkMut.executeMutation({ 
-    order: 0,
-    text: 'aaa',
-    href: 'https://google.com'
+    order: 1,
+    text: 'New link...',
+    href: 'https://example.com'
   })
 }
 
@@ -31,6 +32,6 @@ function createLink () {
   <form 
     @submit.prevent="createLink"
   >
-    <button type="submit">Submit</button>
+    <CreateButton type="submit">New Link</CreateButton>
   </form>
 </template>

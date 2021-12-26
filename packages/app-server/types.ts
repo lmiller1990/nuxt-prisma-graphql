@@ -12,8 +12,19 @@ import {
 import fs from "fs";
 import { Link, User } from "nexus-prisma";
 import path from "path";
-import { gqlThemeName } from './scripts/generateTemplateTypes'
-export * from './scripts/generateTemplateTypes'
+import { gqlThemeName } from "./scripts/generateTemplateTypes";
+import { Context } from "./context";
+export * from "./scripts/generateTemplateTypes";
+
+const prismaUser = (ctx: Context) =>
+  ctx.prisma.user.findFirst({
+    where: {
+      id: ctx.user?.id,
+    },
+    include: {
+      links: true,
+    },
+  });
 
 export const gqlUser = objectType({
   name: User.$name,
@@ -42,41 +53,39 @@ export const Query = queryType({
     t.field("viewer", {
       type: "User",
       resolve: (src, args, ctx) => {
-        return ctx.prisma.user.findFirst({
-          where: {
-            id: ctx.user?.id,
-          },
-          include: {
-            links: true,
-          },
-        });
+        return prismaUser(ctx);
       },
     });
 
     t.field("preview", {
-      type: 'String',
+      type: "String",
       args: {
-        theme: nonNull(gqlThemeName)
+        theme: nonNull(gqlThemeName),
       },
       resolve: async (src, args, ctx) => {
-        const template = fs.readFileSync(path.join(__dirname, '..', `template-${args.theme}`, 'dist', 'index.html'), 'utf-8')
-        const user = await ctx.prisma.user.findFirst({
-          where: {
-            id: ctx.user?.id,
-          },
-          include: {
-            links: true,
-          },
-        });
+        const template = fs.readFileSync(
+          path.join(
+            __dirname,
+            "..",
+            `template-${args.theme}`,
+            "dist",
+            "index.html"
+          ),
+          "utf-8"
+        );
+        const user = await prismaUser(ctx);
 
-        const links = user?.links.map(({ href, text }) => ({ href, text })) || []
+        const links =
+          user?.links.map(({ href, text }) => ({ href, text })) || [];
 
         return template.replace(
-          '<script data-links></script>', 
-          `<script data-links>window.links = '${JSON.stringify(links)}'</script>`, 
-        )
-      }
-    })
+          "<script data-links></script>",
+          `<script data-links>window.links = '${JSON.stringify(
+            links
+          )}'</script>`
+        );
+      },
+    });
   },
 });
 
@@ -97,23 +106,18 @@ export const Mutation = mutationType({
         links: nonNull(list(nonNull(SaveLinkInput))),
       },
       resolve: async (src, args, ctx) => {
-        await Promise.all(args.links.map(({ id, ...data }) => {
-          return ctx.prisma.link.update({
-            where: {
-              id,
-            },
-            data,
-          });
-        }))
+        await Promise.all(
+          args.links.map(({ id, ...data }) => {
+            return ctx.prisma.link.update({
+              where: {
+                id,
+              },
+              data,
+            });
+          })
+        );
 
-        return ctx.prisma.user.findFirst({
-          where: {
-            id: ctx.user?.id,
-          },
-          include: {
-            links: true,
-          },
-        });
+        return prismaUser(ctx);
       },
     });
 
@@ -125,27 +129,35 @@ export const Mutation = mutationType({
       },
       type: "User",
       resolve: async (src, args, ctx) => {
-        if (!ctx.user) {
+        const user = await prismaUser(ctx);
+
+        if (!user) {
           return null;
         }
 
+        await Promise.all(
+          user.links.map(({ id, order }) => {
+            return ctx.prisma.link.update({
+              where: {
+                id,
+              },
+              data: {
+                order: (order += 1),
+              },
+            });
+          })
+        );
+
         await ctx.prisma.link.create({
           data: {
-            userId: ctx.user?.id,
+            userId: user.id,
             text: args.text,
             order: args.order,
             href: args.href,
           },
         });
 
-        return ctx.prisma.user.findFirst({
-          where: {
-            id: ctx.user?.id,
-          },
-          include: {
-            links: true,
-          },
-        });
+        return prismaUser(ctx)
       },
     });
   },

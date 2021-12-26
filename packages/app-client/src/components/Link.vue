@@ -19,7 +19,7 @@ const validityFor = (attr: LinkKey): InputValidationResult => ({
 </script>
 
 <template>
-  <div class="p-2 m-2 rounded-md border border-gray-300">
+  <div class="p-2 my-2 rounded-md border border-gray-300">
     <Input
       :modelValue="props.link.text.val"
       @update:modelValue="(val) => emits('update', props.link.id, 'text', val)"

@@ -61,13 +61,7 @@ const client = createClient({
       },
       addAuthToOperation,
     }),
-    cacheExchange({
-      updates: {
-        // createLink: (result, args, cache, info) => {
-
-        // }
-      }
-    }),
+    cacheExchange(),
     fetchExchange,
   ],
 });

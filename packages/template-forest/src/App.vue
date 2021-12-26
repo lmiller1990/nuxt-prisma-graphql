@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-green-400 h-full">
+  <div class="h-full">
     <div class="flex flex-col items-center justify-center text-white text-2xl">
       <img 
         class="rounded-full h-48 w-48 m-4"
@@ -42,7 +42,4 @@ defineProps<{
 </script>
 
 <style>
-html, body, #app {
-  height: 100%;
-}
 </style>

@@ -13,21 +13,19 @@ declare global {
   }
 }
 
-// const links: Link[] = [
-//   {
-//     href: "https://lachlan-miller.me",
-//     text: "My website",
-//   },
-//   {
-//     href: "https://github.com/lmiller1990",
-//     text: "GitHub",
-//   },
-//   {
-//     href: "https://twitter.com/Lachlan19900",
-//     text: "Twitter",
-//   },
-// ];
-
-// window.links = links
+const links: Link[] = [
+  {
+    href: "https://lachlan-miller.me",
+    text: "My website",
+  },
+  {
+    href: "https://github.com/lmiller1990",
+    text: "GitHub",
+  },
+  {
+    href: "https://twitter.com/Lachlan19900",
+    text: "Twitter",
+  },
+];
 
 createApp(App, { links: JSON.parse(window.links) || [] }).mount("#app");
