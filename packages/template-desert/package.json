@@ -15,7 +15,9 @@
   },
   "scripts": {
     "build": "vite build && yarn copy-dist",
+    "build:prod": "vite build && yarn copy-dist:prod",
     "dev": "vite",
+    "copy-dist:prod": "cp dist/assets/* ../app-client/dist/assets",
     "copy-dist": "cp dist/assets/* ../app-client/assets",
     "postinstall": "yarn build && yarn copy-dist"
   }

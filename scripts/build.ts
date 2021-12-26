@@ -10,7 +10,7 @@ const server = spawn(
 );
 
 server.on("exit", () => {
-  spawn("yarn", ["lerna", "run", "build", "--ignore", "@packages/app-server"], {
+  spawn("yarn", ["lerna", "run", "build:prod", "--ignore", "@packages/app-server"], {
     stdio: "inherit",
   }).on("exit", () => {
     console.log("Done building");

@@ -19,6 +19,6 @@
   },
   "scripts": {
     "dev": "yarn gulp dev",
-    "build": "ts-node ./scripts/build.ts"
+    "build:prod": "ts-node ./scripts/build.ts"
   }
 }

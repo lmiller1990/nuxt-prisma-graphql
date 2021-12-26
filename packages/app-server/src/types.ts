@@ -66,6 +66,7 @@ export const Query = queryType({
           path.join(
             __dirname,
             "..",
+            "..",
             `template-${args.theme}`,
             "dist",
             "index.html"
