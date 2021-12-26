@@ -15,6 +15,7 @@ type Mutation {
 }
 
 type Query {
+  preview(theme: ThemeName!): String
   viewer: User
 }
 
@@ -22,6 +23,10 @@ input SaveLinkInput {
   href: String!
   id: Int!
   text: String!
+}
+
+enum ThemeName {
+  forest
 }
 
 type User {

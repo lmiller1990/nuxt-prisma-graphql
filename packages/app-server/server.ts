@@ -18,7 +18,9 @@ export interface Req extends Request {
   user?: User
 }
 
-export const prisma = new PrismaClient({});
+export const prisma = new PrismaClient({
+  log: []
+});
 
 function addPrisma (req: Req, res: Response, next: NextFunction) {
   req.prisma = prisma

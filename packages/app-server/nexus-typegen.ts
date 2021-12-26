@@ -22,6 +22,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  ThemeName: "forest"
 }
 
 export interface NexusGenScalars {
@@ -56,7 +57,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   Link: { // field return type
@@ -70,6 +71,7 @@ export interface NexusGenFieldTypes {
     saveLinks: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
+    preview: string | null; // String
     viewer: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
@@ -92,6 +94,7 @@ export interface NexusGenFieldTypeNames {
     saveLinks: 'User'
   }
   Query: { // field return type name
+    preview: 'String'
     viewer: 'User'
   }
   User: { // field return type name
@@ -113,6 +116,11 @@ export interface NexusGenArgTypes {
       links: NexusGenInputs['SaveLinkInput'][]; // [SaveLinkInput!]!
     }
   }
+  Query: {
+    preview: { // args
+      theme: NexusGenEnums['ThemeName']; // ThemeName!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -125,7 +133,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = keyof NexusGenInputs;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 

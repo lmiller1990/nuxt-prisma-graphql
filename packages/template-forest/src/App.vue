@@ -33,22 +33,12 @@
 </template>
 
 <script lang="ts" setup>
+import type { Link } from './main'
 const profile = '@lmiller1990'
 
-const links = [
-  {
-    href: 'https://lachlan-miller.me',
-    text: 'My website',
-  },
-  {
-    href: 'https://github.com/lmiller1990',
-    text: 'GitHub',
-  },
-  {
-    href: 'https://twitter.com/Lachlan19900',
-    text: 'Twitter',
-  }
-] as const
+defineProps<{
+  links: Link[]
+}>()
 </script>
 
 <style>

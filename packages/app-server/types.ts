@@ -1,5 +1,6 @@
 import {
   arg,
+  enumType,
   inputObjectType,
   intArg,
   list,
@@ -9,7 +10,9 @@ import {
   queryType,
   stringArg,
 } from "nexus";
+import fs from "fs";
 import { Link, User } from "nexus-prisma";
+import path from "path";
 
 export const gqlUser = objectType({
   name: User.$name,
@@ -33,6 +36,11 @@ export const gqlLink = objectType({
   },
 });
 
+export const gqlThemeName = enumType({
+  name: 'ThemeName',
+  members: ['forest']
+})
+
 export const Query = queryType({
   definition(t) {
     t.field("viewer", {
@@ -48,6 +56,31 @@ export const Query = queryType({
         });
       },
     });
+
+    t.field("preview", {
+      type: 'String',
+      args: {
+        theme: nonNull(gqlThemeName)
+      },
+      resolve: async (src, args, ctx) => {
+        const template = fs.readFileSync(path.join(__dirname, '..', `template-${args.theme}`, 'dist', 'index.html'), 'utf-8')
+        const user = await ctx.prisma.user.findFirst({
+          where: {
+            id: ctx.user?.id,
+          },
+          include: {
+            links: true,
+          },
+        });
+
+        const links = user?.links.map(({ href, text }) => ({ href, text })) || []
+
+        return template.replace(
+          '<script data-links></script>', 
+          `<script data-links>window.links = '${JSON.stringify(links)}'</script>`, 
+        )
+      }
+    })
   },
 });
 
