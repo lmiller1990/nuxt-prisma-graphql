@@ -1,5 +1,6 @@
 {
   "name": "@packages/template-desert",
+  "license": "UNLICENSED",
   "dependencies": {
     "vue": "^3.2.16"
   },
@@ -13,8 +14,9 @@
     "vue-tsc": "^0.3.0"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && yarn copy-dist",
     "dev": "vite",
-    "postinstall": "yarn build && cp dist/assets/* ../app-client/assets"
+    "copy-dist": "cp dist/assets/* ../app-client/assets",
+    "postinstall": "yarn build && yarn copy-dist"
   }
 }
