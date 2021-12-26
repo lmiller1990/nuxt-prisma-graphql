@@ -39,7 +39,8 @@
   "scripts": {
     "gql:codegen": "graphql-codegen --config ${PWD}/graphql-codegen.yml",
     "test:unit": "yarn jest",
-    "build": "yarn gql:codegen && vue-tsc --noEmit && vite build",
-    "dev": "vite"
+    "build": "yarn clean && yarn gql:codegen && vue-tsc --noEmit && vite build",
+    "dev": "vite",
+    "clean": "rimraf src/**/*.js && rimraf src/**/*.js.map || echo 'done'"
   }
 }
