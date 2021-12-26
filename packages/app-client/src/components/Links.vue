@@ -84,10 +84,11 @@ async function handleSaveAndPreview() {
 <template>
   <Preview v-if="showPreview" />
 
-  <div v-for="link of orderedForm">
+  <div v-for="(link, idx) of orderedForm">
     <Link
       :link="link"
       :key="link.id"
+      :class="{ 'mb-20': idx === orderedForm.length - 1 }"
       @update="(id, key, val) => handleUpdate(id, key, val)"
     />
   </div>
