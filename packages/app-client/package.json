@@ -1,5 +1,6 @@
 {
   "name": "@packages/app-client",
+  "private": true,
   "license": "UNLICENSED",
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.19.2",

@@ -2,6 +2,7 @@
   "name": "linktree",
   "version": "1.0.0",
   "main": "index.js",
+  "private": true,
   "license": "UNLICENSED",
   "devDependencies": {
     "@types/gulp": "^4.0.9",
@@ -19,6 +20,7 @@
   },
   "scripts": {
     "dev": "yarn gulp dev",
-    "build:prod": "ts-node ./scripts/build.ts"
+    "build:prod": "ts-node ./scripts/build.ts",
+    "install": "lerna exec yarn install"
   }
 }

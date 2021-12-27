@@ -1,5 +1,6 @@
 {
   "name": "@packages/template-desert",
+  "private": true,
   "license": "UNLICENSED",
   "dependencies": {
     "vue": "^3.2.16"

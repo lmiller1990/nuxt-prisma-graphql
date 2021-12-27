@@ -1,5 +1,6 @@
 {
   "name": "@packages/template-forest",
+  "private": true,
   "dependencies": {
     "vue": "^3.2.16"
   },
