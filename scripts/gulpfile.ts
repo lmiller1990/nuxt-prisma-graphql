@@ -67,11 +67,16 @@ async function nexusTypegenWatch() {
 
 async function rebuildPrisma() {
   const dfd = pDefer();
-  const s = spawn("yarn", ["prisma", "generate"], {
+  const s = spawn("yarn", ["prisma", "migrate", "dev"], {
     stdio: "inherit",
     cwd: "packages/app-server",
   });
+
   s.on("exit", () => {
+    spawn("yarn", ["prisma", "generate"], {
+      stdio: "inherit",
+      cwd: "packages/app-server",
+    });
     console.log("Done rebuilding prisma");
     dfd.resolve();
   });
