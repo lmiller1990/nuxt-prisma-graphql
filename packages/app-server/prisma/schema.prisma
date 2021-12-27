@@ -17,6 +17,7 @@ model User {
   updatedAt DateTime? @updatedAt
 
   username String?
+  profile  String?
   email    String  @unique
   verified Boolean @default(false)
   pro      Boolean @default(false)

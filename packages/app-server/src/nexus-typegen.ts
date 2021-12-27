@@ -45,6 +45,7 @@ export interface NexusGenObjects {
   User: { // root type
     email: string; // String!
     id: number; // Int!
+    profile?: string | null; // String
     username?: string | null; // String
   }
 }
@@ -69,6 +70,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createLink: NexusGenRootTypes['User'] | null; // User
     saveLinks: NexusGenRootTypes['User'] | null; // User
+    updateUser: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
     preview: string | null; // String
@@ -78,6 +80,7 @@ export interface NexusGenFieldTypes {
     email: string; // String!
     id: number; // Int!
     links: NexusGenRootTypes['Link'][]; // [Link!]!
+    profile: string | null; // String
     username: string | null; // String
   }
 }
@@ -92,6 +95,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createLink: 'User'
     saveLinks: 'User'
+    updateUser: 'User'
   }
   Query: { // field return type name
     preview: 'String'
@@ -101,6 +105,7 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     id: 'Int'
     links: 'Link'
+    profile: 'String'
     username: 'String'
   }
 }
@@ -114,6 +119,10 @@ export interface NexusGenArgTypes {
     }
     saveLinks: { // args
       links: NexusGenInputs['SaveLinkInput'][]; // [SaveLinkInput!]!
+    }
+    updateUser: { // args
+      profile: string; // String!
+      username: string; // String!
     }
   }
   Query: {

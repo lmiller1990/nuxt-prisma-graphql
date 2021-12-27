@@ -33,6 +33,7 @@ export const gqlUser = objectType({
     t.field(User.email);
     t.field(User.links);
     t.field(User.username);
+    t.field(User.profile);
   },
 });
 
@@ -100,6 +101,29 @@ export const SaveLinkInput = inputObjectType({
 
 export const Mutation = mutationType({
   definition(t) {
+    t.field("updateUser", {
+      type: "User",
+      args: {
+        profile: nonNull(stringArg()),
+        username: nonNull(stringArg()),
+      },
+      resolve: async (src, args, ctx) => {
+        if (!ctx.user) {
+          return null
+        }
+
+        return ctx.prisma.user.update({
+          data: {
+            username: args.username,
+            profile: args.profile,
+          },
+          where: {
+            id: ctx.user.id
+          }
+        })
+      },
+    });
+
     t.field("saveLinks", {
       type: "User",
       args: {

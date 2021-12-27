@@ -24,7 +24,7 @@ const validityFor = (attr: LinkKey): InputValidationResult => ({
       :modelValue="props.link.text.val"
       @update:modelValue="(val) => emits('update', props.link.id, 'text', val)"
       label="Text"
-      :id="props.link.id.toString()"
+      :id="`${props.link.id.toString()}-text`"
       :validity="validityFor('text')"
       :required="true"
     />
@@ -33,7 +33,7 @@ const validityFor = (attr: LinkKey): InputValidationResult => ({
       :modelValue="props.link.href.val"
       @update:modelValue="(val) => emits('update', props.link.id, 'href', val)"
       label="Link"
-      :id="props.link.id.toString()"
+      :id="`${props.link.id.toString()}-href`"
       :validity="validityFor('href')"
       :required="true"
     />

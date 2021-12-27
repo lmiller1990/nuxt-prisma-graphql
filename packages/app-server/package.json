@@ -27,7 +27,7 @@
     "typescript": "^4.3.2"
   },
   "scripts": {
-    "nexus:dev": "ts-node --transpile-only src/types.ts",
+    "nexus:dev": "ts-node --transpile-only src/schema.ts",
     "build:prod": "yarn clean && yarn db:migrate && yarn db:generate && yarn ts-node --transpile-only src/schema.ts && tsc -p .",
     "clean": "rimraf src/**/*.js && rimraf src/**/*.js.map || echo 'done'",
     "db:migrate": "prisma migrate dev",

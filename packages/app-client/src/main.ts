@@ -1,16 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import Main from "./components/Main.vue";
-import { createWebHistory, createRouter } from "vue-router";
+import { createRouter } from "./router";
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes: [
-    {
-      component: Main,
-      path: "/",
-    },
-  ],
-});
+const router = createRouter();
 
 createApp(App).use(router).mount("#app");

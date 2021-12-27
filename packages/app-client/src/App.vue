@@ -82,12 +82,12 @@ authenticate(onRedirectCallback).then(() => console.log(user.value));
 </script>
 
 <template>
-  <Suspense>
+  <suspense>
     <template #default>
       <div>
-        <Main />
+        <router-view />
       </div>
     </template>
     <template #fallback> Loading </template>
-  </Suspense>
+  </suspense>
 </template>

@@ -12,6 +12,7 @@ type Link {
 type Mutation {
   createLink(href: String!, order: Int!, text: String!): User
   saveLinks(links: [SaveLinkInput!]!): User
+  updateUser(profile: String!, username: String!): User
 }
 
 type Query {
@@ -34,5 +35,6 @@ type User {
   email: String!
   id: Int!
   links: [Link!]!
+  profile: String
   username: String
 }

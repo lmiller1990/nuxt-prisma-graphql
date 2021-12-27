@@ -18,8 +18,6 @@ query App {
 const result = useQuery({ query: AppDocument })
 
 const { login, logout } = useAuth();
-
-
 </script>
 
 <template>
@@ -27,15 +25,16 @@ const { login, logout } = useAuth();
   
   <button @click="login()">Login</button>
   <button @click="logout()">Logout</button>
+  <router-link to="/links">Links</router-link>
+  <router-link to="/go-live">Go Live</router-link>
   <div class="m-2">
 
   <div class="my-2 flex justify-end">  
     <CreateLink />
   </div> 
 
-  <Links 
-    v-if="result.data.value?.viewer" 
-    :gql="result?.data.value.viewer" 
-  />
+  view is
+  <router-view />
+
   </div> 
 </template>
