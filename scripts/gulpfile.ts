@@ -2,6 +2,7 @@ import gulp from "gulp";
 import { spawn } from "child_process";
 import pDefer from "p-defer";
 import chokidar from "chokidar";
+import { DefaultDeserializer } from "v8";
 
 async function serverDev() {
   spawn(
@@ -19,38 +20,31 @@ async function serverDev() {
 }
 
 async function gqlCodegen() {
-  const w = chokidar.watch("./src/**/*.vue");
-  const runCodegen = () =>
-    spawn("yarn", ["gql:codegen"], {
+  const w = chokidar.watch("src/**/*.vue");
+  const runCodegen = () => {
+    console.log("Running GraphQL Codegen...");
+    return spawn("yarn", ["gql:codegen"], {
       stdio: "inherit",
       cwd: "packages/app-client",
     });
+  };
 
-  w.on("ready", () => {
-    console.log('Running GraphQL Codegen...')
+  w.on("change", (path) => {
+    console.log(`${path} has changed -> running GraphQL codegen...`);
     runCodegen();
   });
 
-  w.on("all", () => {
-    const out = runCodegen();
-    out.on("data", () => {});
-    out.on("error", (err) => {
-      console.error("gql:codegen", err);
-    });
-  });
+  runCodegen();
 }
 
 async function nexusTypegenWatch() {
-  const dfd = pDefer();
-  const w = chokidar.watch("./packages/app-server/src/schema.ts");
+  const dfd = pDefer()
 
-  w.on("all", () => {
+  const runGen = () => {
+    console.log("generating nexus schema...");
     const out = spawn("yarn", ["nexus:dev"], {
       stdio: "inherit",
       cwd: "packages/app-server",
-    });
-    out.on("data", () => {
-      dfd.resolve();
     });
 
     out.on("error", (err) => {
@@ -58,11 +52,16 @@ async function nexusTypegenWatch() {
     });
 
     out.on("exit", () => {
-      console.error("exit nexus typegen due to error");
+      console.log("nexus schema generated");
+      dfd.resolve()
     });
-  });
+  };
 
-  dfd.promise;
+  chokidar.watch("./packages/app-server/src/*").on("change", runGen);
+
+  runGen()
+
+  return dfd.promise
 }
 
 async function rebuildPrisma() {
@@ -108,7 +107,8 @@ gulp.task(
   gulp.series(
     rebuildPrisma,
     gulp.parallel(tailwindDev, startViteDevServer),
-    gulp.series(nexusTypegenWatch, gqlCodegen),
+    nexusTypegenWatch,
+    gqlCodegen,
     serverDev
   )
 );

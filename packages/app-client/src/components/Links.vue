@@ -10,6 +10,7 @@ import {
 import Button from "./Button.vue";
 import Link, { LinkKey } from "./Link.vue";
 import Preview from "./Preview.vue";
+import FixedBottom from "./FixedBottom.vue";
 
 gql`
   fragment Links on User {
@@ -93,7 +94,7 @@ async function handleSaveAndPreview() {
     />
   </div>
 
-  <div class="fixed bottom-4 inset-x-0 mx-2">
+  <FixedBottom>
     <Button
       class="w-20 absolute bottom-0 right-0"
       v-if="showPreview"
@@ -111,5 +112,5 @@ async function handleSaveAndPreview() {
     >
       Save and Preview
     </Button>
-  </div>
+  </FixedBottom>
 </template>

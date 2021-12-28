@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build": "vite build && yarn copy-dist",
+    "clean": "echo 'no clean step specified'",
     "build:prod": "vite build && yarn copy-dist:prod",
     "dev": "vite",
     "copy-dist:prod": "cp dist/assets/* ../app-client/dist/assets",

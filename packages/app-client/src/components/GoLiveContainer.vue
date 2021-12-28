@@ -19,7 +19,7 @@ const result = await useQuery({ query: GoLiveDocument })
 <template>
   <suspense>
     <template #default>
-      <GoLive v-if="result.data.value?.viewer" :gql="result?.data.value.viewer" />
+      <GoLive v-if="result.data.value?.viewer" :gql="result?.data.value" />
     </template>
 
     <template #fallback>Loading...</template>

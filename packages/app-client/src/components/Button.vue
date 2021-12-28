@@ -2,16 +2,18 @@
 const props = withDefaults(
   defineProps<{
     disabled?: boolean;
-}>(),
+    loading?: boolean;
+  }>(),
   {
     disabled: false,
+    loading: false
   }
 );
 </script>
 
 <template>
   <button
-    :disabled="props.disabled"
+    :disabled="props.disabled || props.loading"
     class="
       bg-purple-700
       hover:bg-purple-500
@@ -28,6 +30,7 @@ const props = withDefaults(
       justify-center
       disabled:bg-purple-200
     "
+    :class="{ 'bg-purple-300': props.loading }"
   >
     <slot />
   </button>

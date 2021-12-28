@@ -21,6 +21,7 @@
   "scripts": {
     "dev": "yarn gulp dev",
     "build:prod": "ts-node ./scripts/build.ts",
+    "clean": "lerna exec yarn clean",
     "install": "lerna exec yarn install"
   }
 }

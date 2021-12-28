@@ -1,8 +1,5 @@
 <script setup lang="ts">
-export interface InputValidationResult {
-  valid: boolean;
-  reason?: string;
-}
+import { InputValidationResult } from "./shared";
 
 const props = withDefaults(
   defineProps<{
@@ -11,8 +8,10 @@ const props = withDefaults(
     modelValue: string;
     validity?: InputValidationResult;
     required?: boolean;
+    rows?: number
   }>(),
   {
+    rows: 4,
     required: false,
     validity: () => ({
       valid: false,
@@ -36,10 +35,11 @@ function handleInput(e: Event) {
       {{ props.label }}
     </label>
 
-    <input
+    <textarea
       :value="props.modelValue"
       @input="handleInput"
       :id="props.id"
+      :rows="props.rows"
       class="
         border border-gray-300
         rounded-md

@@ -479,6 +479,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 5rem;
 }
 
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
 .block {
   display: block;
 }
@@ -550,6 +554,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(21 128 61 / var(--tw-bg-opacity));
 }
 
+.bg-purple-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(216 180 254 / var(--tw-bg-opacity));
+}
+
 .p-1 {
   padding: 0.25rem;
 }
@@ -576,6 +585,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 .font-semibold {
