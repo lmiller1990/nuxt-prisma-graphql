@@ -1,16 +1,19 @@
 {
   "name": "@packages/app-server",
   "private": true,
+  "type": "module",
   "devDependencies": {
     "@types/body-parser": "^1.19.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/express-graphql": "^0.9.0",
+    "@types/fs-extra": "^9.0.13",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/node": "^16.11.10",
     "body-parser": "^1.19.1",
     "chokidar": "^3.5.2",
     "cors": "^2.8.5",
+    "execa": "^6.0.0",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "graphql": "^15.0.1",
@@ -28,12 +31,16 @@
   },
   "scripts": {
     "nexus:dev": "ts-node --transpile-only src/schema.ts",
-    "build:prod": "yarn clean && yarn db:migrate && yarn db:generate && yarn ts-node --transpile-only src/schema.ts && tsc -p .",
+    "build:prod": "yarn clean && build:types && yarn db:migrate && yarn db:generate && yarn ts-node --transpile-only src/schema.ts && tsc -p .",
     "clean": "rimraf src/**/*.js && rimraf src/**/*.js.map || echo 'done'",
     "db:migrate": "prisma migrate dev",
-    "db:generate": "prisma generate"
+    "db:generate": "prisma generate",
+    "build:types": "ts-node src/buildTypes.ts --transpile-only",
+    "postinstall": "yarn build:types"
   },
   "dependencies": {
-    "@prisma/client": "3.5.0"
+    "@prisma/client": "3.5.0",
+    "fs-extra": "^10.0.0",
+    "pure-uuid": "^1.6.2"
   }
 }
