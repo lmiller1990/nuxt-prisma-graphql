@@ -1,0 +1,13 @@
+{
+  "name": "@packages/types",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+  },
+  "scripts": {
+    "build:prod": "echo 'no build step'",
+    "clean": "echo 'no clean'"
+  },
+  "dependencies": {
+  }
+}
