@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import type { Link } from '@packages/types'
 import "./index.css";
 
 export interface Link {
@@ -9,25 +10,8 @@ export interface Link {
 
 declare global {
   interface Window {
-    links: string
+    links: Link[]
   }
 }
 
-// const links: Link[] = [
-//   {
-//     href: "https://lachlan-miller.me",
-//     text: "My website",
-//   },
-//   {
-//     href: "https://github.com/lmiller1990",
-//     text: "GitHub",
-//   },
-//   {
-//     href: "https://twitter.com/Lachlan19900",
-//     text: "Twitter",
-//   },
-// ];
-
-// window.links = links
-
-createApp(App, { links: JSON.parse(window.links) || [] }).mount("#app");
+createApp(App, { links: window.links || [] }).mount("#app");

@@ -13,6 +13,8 @@ import { Link, User } from "nexus-prisma";
 import path from "path";
 import { gqlThemeName } from "../scripts/generateTemplateTypes";
 import { Context } from "./context";
+import { generate } from "./generateStaticPage";
+import { uploadAsset } from "./upload";
 export * from "../scripts/generateTemplateTypes";
 
 const prismaUser = (ctx: Context) =>
@@ -101,6 +103,19 @@ export const SaveLinkInput = inputObjectType({
 
 export const Mutation = mutationType({
   definition(t) {
+    t.field('deploy', {
+      type: 'String',
+      resolve: async (src, args, ctx) => {
+        const user = await prismaUser(ctx)
+        if (!user) {
+          return null
+        }
+
+        // const { directory } = await generate(user.links, "forest");
+        // uploadAsset(
+      },
+    })
+
     t.field("updateUser", {
       type: "User",
       args: {
