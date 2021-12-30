@@ -69,6 +69,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createLink: NexusGenRootTypes['User'] | null; // User
+    deploy: string | null; // String
     saveLinks: NexusGenRootTypes['User'] | null; // User
     updateUser: NexusGenRootTypes['User'] | null; // User
   }
@@ -94,6 +95,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createLink: 'User'
+    deploy: 'String'
     saveLinks: 'User'
     updateUser: 'User'
   }

@@ -1,6 +1,6 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-const client = new S3Client({
+export const s3Client = new S3Client({
   region: "us-east-2",
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
@@ -16,5 +16,5 @@ export function uploadAsset(filename: string, body: string, contentType: 'css' |
     ContentType: `text/${contentType}`
   });
 
-  return client.send(upload);
+  return s3Client.send(upload);
 }

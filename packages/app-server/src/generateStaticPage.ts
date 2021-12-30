@@ -72,10 +72,10 @@ async function getPathsForGeneratedAssets(
   return indexHtml;
 }
 
-generate(
-  "lachlan",
-  [{ href: "https://lachlan-miller.me", text: "My website" }],
-  "forest"
-)
-  .then(console.log)
-  .catch(console.error);
+// generate(
+//   "lachlan",
+//   [{ href: "https://lachlan-miller.me", text: "My website" }],
+//   "forest"
+// )
+//   .then(console.log)
+//   .catch(console.error);
