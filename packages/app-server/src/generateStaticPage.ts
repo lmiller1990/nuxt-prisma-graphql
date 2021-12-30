@@ -2,7 +2,6 @@ import { Theme } from "./themes";
 import os from "os";
 import type { Link } from "@packages/types";
 import { spawn } from "child_process";
-import { promisify } from "util";
 import fs from "fs-extra";
 import path from "path";
 import UUID from "pure-uuid";
