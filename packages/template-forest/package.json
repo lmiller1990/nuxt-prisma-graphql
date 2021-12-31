@@ -24,5 +24,8 @@
     "copy-dist:prod": "cp dist/assets/* ../app-client/dist/assets",
     "copy-dist": "cp dist/assets/* ../app-client/assets",
     "postinstall": "yarn build && yarn copy-dist"
+  },
+  "workspaces": {
+    "nohoist": ["**"]
   }
 }

@@ -83,9 +83,7 @@ export const Query = queryType({
 
         return template.replace(
           "<script data-links></script>",
-          `<script data-links>window.links = '${JSON.stringify(
-            links
-          )}'</script>`
+          `<script data-links>window.links = ${links}</script>`
         );
       },
     });
@@ -103,18 +101,19 @@ export const SaveLinkInput = inputObjectType({
 
 export const Mutation = mutationType({
   definition(t) {
-    t.field('deploy', {
-      type: 'String',
+    t.field("deploy", {
+      type: "Boolean",
       resolve: async (src, args, ctx) => {
-        const user = await prismaUser(ctx)
-        if (!user) {
-          return null
+        const user = await prismaUser(ctx);
+        if (!user || !user.username) {
+          return null;
         }
 
-        // const { directory } = await generate(user.links, "forest");
-        // uploadAsset(
+        await generate(user.username, user.links, "forest");
+
+        return true
       },
-    })
+    });
 
     t.field("updateUser", {
       type: "User",
@@ -124,7 +123,7 @@ export const Mutation = mutationType({
       },
       resolve: async (src, args, ctx) => {
         if (!ctx.user) {
-          return null
+          return null;
         }
 
         return ctx.prisma.user.update({
@@ -133,9 +132,9 @@ export const Mutation = mutationType({
             profile: args.profile,
           },
           where: {
-            id: ctx.user.id
-          }
-        })
+            id: ctx.user.id,
+          },
+        });
       },
     });
 
@@ -196,7 +195,7 @@ export const Mutation = mutationType({
           },
         });
 
-        return prismaUser(ctx)
+        return prismaUser(ctx);
       },
     });
   },

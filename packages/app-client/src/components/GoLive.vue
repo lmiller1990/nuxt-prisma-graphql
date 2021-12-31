@@ -2,7 +2,7 @@
 import { gql } from "@urql/core";
 import { computed, reactive, ref, watchEffect } from "vue";
 import Input, { InputValidationResult } from "./Input.vue";
-import { GoLiveFragment, UpdateUserDocument } from "../generated/graphql";
+import { DeployDocument, GoLiveFragment, UpdateUserDocument } from "../generated/graphql";
 import Textarea from "./Textarea.vue";
 import FixedBottom from "./FixedBottom.vue";
 import Button from "./Button.vue";
@@ -17,6 +17,12 @@ gql`
     }
   }
 `;
+
+gql`
+  mutation Deploy {
+    deploy
+  }
+`
 
 gql`
   fragment GoLive on Query {
@@ -50,6 +56,7 @@ const usernameValidation = computed<InputValidationResult>(() => {
 });
 
 const updateUser = useMutation(UpdateUserDocument);
+const deploy = useMutation(DeployDocument);
 
 const { saving, execute: handleGoLive } = useSaving({
   handle: async () => {
@@ -57,6 +64,8 @@ const { saving, execute: handleGoLive } = useSaving({
       username: user.username,
       profile: user.profile,
     })
+
+    await deploy.executeMutation({})
   },
 })
 

@@ -17,7 +17,7 @@ export async function generate(
   username: string,
   links: Link[],
   theme: Theme
-): Promise<string> {
+): Promise<void> {
   const dir = tmpDir();
   console.log(`Creating tmp dir ${dir}`);
   await fs.mkdirp(dir);
@@ -32,8 +32,8 @@ export async function generate(
     });
 
     s.on("exit", async () => {
-      const indexHtml = await getPathsForGeneratedAssets(dir, username, links);
-      resolve(indexHtml);
+      await getPathsForGeneratedAssets(dir, username, links);
+      resolve();
     });
   });
 }

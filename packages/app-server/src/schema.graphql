@@ -11,7 +11,7 @@ type Link {
 
 type Mutation {
   createLink(href: String!, order: Int!, text: String!): User
-  deploy: String
+  deploy: Boolean
   saveLinks(links: [SaveLinkInput!]!): User
   updateUser(profile: String!, username: String!): User
 }

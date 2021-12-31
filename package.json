@@ -27,6 +27,10 @@
   "workspaces": {
     "packages": [
       "packages/*"
+    ],
+    "nohoist": [
+      "**/template-forest/**",
+      "**/template-desert/**"
     ]
   }
 }
